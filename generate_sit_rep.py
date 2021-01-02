@@ -3,6 +3,7 @@ from constants import file_constants, sitrep_column_constants
 from constants.sitrep_column_constants import column_title_to_letter_dicts
 from excel_util import get_last_row, get_cell
 from openpyxl import load_workbook
+from openpyxl.styles import NamedStyle
 
 # Given an input file path to an existing sitrep excel file,
 # adds a new record for the report_date input, and writes the file to output_file_path
@@ -33,7 +34,8 @@ def generate_report_for_day(input_file_path: str, output_file_path: str, report_
     # Update the last row with values for report_date
     # TODO: Check if this is the correct format
     for column_title, column_letter in column_title_to_letter_dicts.items():
-        sheet[get_cell(column_letter, last_row_number)] = column_title_to_value_dict[column_title]
+        cell = get_cell(column_letter, last_row_number)
+        cell.value = column_title_to_value_dict[column_title]
 
     # Save the workbook
     wb.save(filename=output_file_path)
