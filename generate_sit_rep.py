@@ -16,14 +16,14 @@ def generate_report_for_day(input_file_path: str, output_file_path: str, report_
     column_title_to_value_dict = {}
     column_title_to_value_dict[sitrep_column_constants.DATE_COLUMN] = report_date
     tz = timezone('EST')
-    column_title_to_value_dict[sitrep_column_constants.TIME_COLUMN] = datetime.now(tz)
+    column_title_to_value_dict[sitrep_column_constants.TIME_COLUMN] = datetime.now(tz).time()
 
     vdh_dict = get_vdh_data(report_date)
 
     column_title_to_value_dict.update(vdh_dict)
 
     # Load the workbook
-    wb = load_workbook(filename=input_file_path)
+    wb = load_workbook(filename=input_file_path, data_only=True)
 
     # Pull the sheet
     sheet = wb[file_constants.SHEET_NAME]
