@@ -2,7 +2,9 @@ import pandas as pd
 import io
 import requests
 
-import constant
+from constants import constant
+
+
 # Global Cases,
 # Global Deaths,
 # US Cases, US Deaths

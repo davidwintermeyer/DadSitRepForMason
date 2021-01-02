@@ -1,6 +1,6 @@
 import openpyxl
 from openpyxl import load_workbook
-import constant
+from constants import constant
 
 # https://stackoverflow.com/questions/33541692/how-to-find-the-last-row-in-a-column-using-openpyxl-normal-workbook
 def get_last_row(ws: openpyxl.worksheet.worksheet.Worksheet) -> int:
@@ -29,3 +29,9 @@ def update_sitrep():
     wb.save(filename=constant.FILE_PATH)
 
 update_sitrep()
+
+
+# Date time stuff
+
+today_date = datetime.utcnow().date()
+get_vdh_data(today_date - timedelta(days=5))
