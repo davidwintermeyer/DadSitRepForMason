@@ -20,3 +20,8 @@ VDH_TESTING_BY_LAB_REPORT_DATA_ENDPOINT = '3u5k-c2gr'
 VDH_LAB_REPORT_NUMBER_OF_PCR_TESTING_DATA_COLUMN = 'number_of_pcr_testing'
 VDH_LAB_REPORT_NUMBER_OF_POSITIVE_PCR_TESTING_DATA_COLUMN = 'number_of_positive_pcr_testing'
 VDH_LAB_REPORT_HEALTH_DISTRICT_DATA_COLUMN = 'health_district'
+
+
+# Hospitals
+# https://data.virginia.gov/Government/VDH-COVID-19-PublicUseDataset-KeyMeasures-Hospital/28wk-762y
+VDH_KEY_MEASURES_HOSPITALS_DATA_ENDPOINT = '28wk-762y'

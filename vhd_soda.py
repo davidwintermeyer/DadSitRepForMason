@@ -93,6 +93,9 @@ def get_vdh_data(today_date: datetime.date) -> dict:
     result[sitrep_column_constants.PW_DEATHS_COLUMN] = pw_cases_df[
         vdh_constants.VDH_CASES_DATA_FRAME_DEATHS_DATA_COLUMN].sum()
 
+    ########## Hospitalizations ###########
+
+
 
     ########## Positive Test Rate Data ###########
     lab_report_query_string = get_lab_report_query_string(today_date)
