@@ -1,14 +1,35 @@
 import pandas as pd
 
-from datetime import datetime, date, timedelta
+import datetime
 from sodapy import Socrata
 
 import constants.vdh_constants
 from constants import constant, sitrep_column_constants, vdh_constants
 
 
-# Method signature that returns a dict
-def get_vdh_data(today_date: date) -> dict:
+# Looking at the metadata for the data
+#     metadata = client.get_metadata(vdh_constants.VDH_TESTING_BY_LAB_REPORT_DATA_ENDPOINT)
+# lab_report_date datatype is text
+# with format 1/26/2020
+# We want the last seven days worth of data
+# single day: "lab_report_date = '1/3/2021'"
+# No zero padding
+# https://www.programiz.com/python-programming/datetime/strftime
+# Not sure when this gets posted, because I'm only seeing
+# lab_report_query_string = "lab_report_date = '" + today_date.strftime('%-m/%-d/%Y') + "'"
+def get_lab_report_query_string(today_date):
+
+    day_strings = []
+    counter = 0
+    while counter < vdh_constants.NUMBER_OF_DAYS_TO_INCLUDE_IN_TESTING_DATA:
+        date = today_date - datetime.timedelta(days=counter)
+        day_strings.append("'" + date.strftime('%-m/%-d/%Y') + "'")
+        counter = counter + 1
+
+    return "lab_report_date IN (" + ",".join(day_strings) + ")"
+
+
+def get_vdh_data(today_date: datetime.date) -> dict:
     client = Socrata(vdh_constants.VDH_DATA_URL, vdh_constants.VDH_APP_TOKEN)
 
     result = {}
@@ -74,17 +95,7 @@ def get_vdh_data(today_date: date) -> dict:
 
 
     ########## Positive Test Rate Data ###########
-    # Looking at the metadata for the data
-    #     metadata = client.get_metadata(vdh_constants.VDH_TESTING_BY_LAB_REPORT_DATA_ENDPOINT)
-    # lab_report_date datatype is text
-    # with format 1/26/2020
-
-    # No zero padding
-    # https://www.programiz.com/python-programming/datetime/strftime
-    # Not sure when this gets posted, because I'm only seeing
-    # lab_report_query_string = "lab_report_date = '" + today_date.strftime('%-m/%-d/%Y') + "'"
-    # TODO - update this date
-    lab_report_query_string = "lab_report_date = '1/3/2021'"
+    lab_report_query_string = get_lab_report_query_string(today_date)
     lab_report_data = client.get(vdh_constants.VDH_TESTING_BY_LAB_REPORT_DATA_ENDPOINT, where=lab_report_query_string)
     lab_report_df = pd.DataFrame.from_records(lab_report_data)
 

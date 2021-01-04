@@ -1,4 +1,4 @@
 - Format the excel cells
 - Add remaining VDH data
 - Add CSSE Data
-- VDH lab test data date
+- VDH lab test data date - sanity check number of records pulled by query
