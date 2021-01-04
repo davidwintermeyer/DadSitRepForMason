@@ -63,6 +63,7 @@ def get_vdh_data(today_date: date) -> dict:
     result[sitrep_column_constants.ARLINGTON_DEATHS_COLUMN] = arlington_cases_df[
         vdh_constants.VDH_CASES_DATA_FRAME_DEATHS_DATA_COLUMN].sum()
 
+    # pw
     pw_cases_df = cases_df[cases_df[vdh_constants.VDH_CASES_HEALTH_DISTRICT_DATA_COLUMN] == vdh_constants.PW]
     result[sitrep_column_constants.PW_CASES_COLUMN] = pw_cases_df[
         vdh_constants.VDH_CASES_DATA_FRAME_TOTAL_CASES_DATA_COLUMN].sum()
@@ -75,11 +76,44 @@ def get_vdh_data(today_date: date) -> dict:
     ########## Positive Test Rate Data ###########
     # Looking at the metadata for the data
     #     metadata = client.get_metadata(vdh_constants.VDH_TESTING_BY_LAB_REPORT_DATA_ENDPOINT)
-    # labe_report_date datatype is text
+    # lab_report_date datatype is text
     # with format 1/26/2020
 
-    lab_report_query_string = "lab_report_date = '" + str(today_date) + "'"
+    # No zero padding
+    # https://www.programiz.com/python-programming/datetime/strftime
+    # Not sure when this gets posted, because I'm only seeing
+    # lab_report_query_string = "lab_report_date = '" + today_date.strftime('%-m/%-d/%Y') + "'"
+    # TODO - update this date
+    lab_report_query_string = "lab_report_date = '1/3/2021'"
     lab_report_data = client.get(vdh_constants.VDH_TESTING_BY_LAB_REPORT_DATA_ENDPOINT, where=lab_report_query_string)
     lab_report_df = pd.DataFrame.from_records(lab_report_data)
+
+    lab_report_df[[vdh_constants.VDH_LAB_REPORT_NUMBER_OF_PCR_TESTING_DATA_COLUMN,
+              vdh_constants.VDH_LAB_REPORT_NUMBER_OF_POSITIVE_PCR_TESTING_DATA_COLUMN]] = \
+        lab_report_df[[vdh_constants.VDH_LAB_REPORT_NUMBER_OF_PCR_TESTING_DATA_COLUMN,
+                  vdh_constants.VDH_LAB_REPORT_NUMBER_OF_POSITIVE_PCR_TESTING_DATA_COLUMN]].apply(pd.to_numeric)
+
+    va_number_of_pcr_tests = lab_report_df[vdh_constants.VDH_LAB_REPORT_NUMBER_OF_PCR_TESTING_DATA_COLUMN].sum()
+    va_number_of_positive_pcs_tests = lab_report_df[vdh_constants.VDH_LAB_REPORT_NUMBER_OF_POSITIVE_PCR_TESTING_DATA_COLUMN].sum()
+
+    result[sitrep_column_constants.VA_POSITIVE_TEST_RATE_COLUMN] = va_number_of_positive_pcs_tests / va_number_of_pcr_tests
+
+    # Fairfax
+    fairfax_test_results_df = lab_report_df[lab_report_df[vdh_constants.VDH_LAB_REPORT_HEALTH_DISTRICT_DATA_COLUMN] == vdh_constants.FAIRFAX]
+    fairfax_number_of_pcr_tests = fairfax_test_results_df[vdh_constants.VDH_LAB_REPORT_NUMBER_OF_PCR_TESTING_DATA_COLUMN].sum()
+    fairfax_number_of_positive_pcs_tests = fairfax_test_results_df[vdh_constants.VDH_LAB_REPORT_NUMBER_OF_POSITIVE_PCR_TESTING_DATA_COLUMN].sum()
+    result[sitrep_column_constants.FAIRFAX_POSITIVE_TEST_RATE_COLUMN] = fairfax_number_of_positive_pcs_tests / fairfax_number_of_pcr_tests
+
+    # Arlington
+    arlington_test_results_df = lab_report_df[lab_report_df[vdh_constants.VDH_LAB_REPORT_HEALTH_DISTRICT_DATA_COLUMN] == vdh_constants.ARLINGTON]
+    arlington_number_of_pcr_tests = arlington_test_results_df[vdh_constants.VDH_LAB_REPORT_NUMBER_OF_PCR_TESTING_DATA_COLUMN].sum()
+    arlington_number_of_positive_pcs_tests = arlington_test_results_df[vdh_constants.VDH_LAB_REPORT_NUMBER_OF_POSITIVE_PCR_TESTING_DATA_COLUMN].sum()
+    result[sitrep_column_constants.ARLINGTON_POSITIVE_TEST_RATE_COLUMN] = arlington_number_of_positive_pcs_tests / arlington_number_of_pcr_tests
+
+    # PW
+    pw_test_results_df = lab_report_df[lab_report_df[vdh_constants.VDH_LAB_REPORT_HEALTH_DISTRICT_DATA_COLUMN] == vdh_constants.PW]
+    pw_number_of_pcr_tests = pw_test_results_df[vdh_constants.VDH_LAB_REPORT_NUMBER_OF_PCR_TESTING_DATA_COLUMN].sum()
+    pw_number_of_positive_pcs_tests = pw_test_results_df[vdh_constants.VDH_LAB_REPORT_NUMBER_OF_POSITIVE_PCR_TESTING_DATA_COLUMN].sum()
+    result[sitrep_column_constants.PW_POSITIVE_TEST_RATE_COLUMN] = pw_number_of_positive_pcs_tests / pw_number_of_pcr_tests
 
     return result

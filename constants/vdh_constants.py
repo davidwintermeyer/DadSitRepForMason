@@ -17,3 +17,6 @@ VDH_CASES_HEALTH_DISTRICT_DATA_COLUMN = 'vdh_health_district'
 
 # https://data.virginia.gov/Government/VDH-COVID-19-PublicUseDataset-Tests_by-LabReportDa/3u5k-c2gr
 VDH_TESTING_BY_LAB_REPORT_DATA_ENDPOINT = '3u5k-c2gr'
+VDH_LAB_REPORT_NUMBER_OF_PCR_TESTING_DATA_COLUMN = 'number_of_pcr_testing'
+VDH_LAB_REPORT_NUMBER_OF_POSITIVE_PCR_TESTING_DATA_COLUMN = 'number_of_positive_pcr_testing'
+VDH_LAB_REPORT_HEALTH_DISTRICT_DATA_COLUMN = 'health_district'
