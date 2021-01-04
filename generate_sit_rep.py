@@ -1,9 +1,8 @@
-from datetime import date, datetime
+from datetime import date, datetime, time
 from constants import file_constants, sitrep_column_constants
 from constants.sitrep_column_constants import column_title_to_letter_dicts
 from excel_util import get_last_row, get_cell
 from openpyxl import load_workbook
-from pytz import timezone
 
 # Given an input file path to an existing sitrep excel file,
 # adds a new record for the report_date input, and writes the file to output_file_path
@@ -11,12 +10,11 @@ from pytz import timezone
 # If you want to overwrite the same file, set input_file_path and output_file_path to be the same.
 from vhd_soda import get_vdh_data
 
-def generate_report_for_day(input_file_path: str, output_file_path: str, report_date: date):
+def generate_report_for_day(input_file_path: str, output_file_path: str, report_date: date, report_time: time):
 
     column_title_to_value_dict = {}
     column_title_to_value_dict[sitrep_column_constants.DATE_COLUMN] = report_date
-    tz = timezone('EST')
-    column_title_to_value_dict[sitrep_column_constants.TIME_COLUMN] = datetime.now(tz).time()
+    column_title_to_value_dict[sitrep_column_constants.TIME_COLUMN] = report_time
 
     vdh_dict = get_vdh_data(report_date)
 
