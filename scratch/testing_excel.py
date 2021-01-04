@@ -31,7 +31,3 @@ def update_sitrep():
 update_sitrep()
 
 
-# Date time stuff
-
-today_date = datetime.utcnow().date()
-get_vdh_data(today_date - timedelta(days=5))
