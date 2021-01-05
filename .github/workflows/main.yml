@@ -17,10 +17,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade --no-cache-dir pip
@@ -29,11 +25,12 @@ jobs:
           python -m pip install --no-cache-dir --target . pandas
           python -m pip install --no-cache-dir --target . sodapy
           python -m pip install --no-cache-dir --target . openpyxl
+          python -m pip install --no-cache-dir --target . jdcal
       # https://github.com/svthalia/what-are-we-eating-today/blob/5c4a38017516636910e8751ff044597265613b62/.github/workflows/deploy.yaml
       # https://github.com/maromatorio/Menshen/blob/c311f3272259f034197f2c72b7ef513956039290/.github/workflows/deploy.yml
       - name: Zip the function code
         run: |
-          zip -r deployment.zip lambda_entry_point.py generate_sit_rep.py Covid-19_SitRep_Data.xlsx dependencies util constants pytz requests pandas sodapy openpyxl
+          zip -r deployment.zip lambda_entry_point.py generate_sit_rep.py Covid-19_SitRep_Data.xlsx dependencies util constants pytz requests pandas sodapy openpyxl jdcal
       - name: default deploy
         uses: appleboy/lambda-action@master
         with:
