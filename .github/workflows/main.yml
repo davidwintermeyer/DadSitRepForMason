@@ -27,9 +27,9 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: ${{ secrets.AWS_REGION }}
           function_name: DadSitRepForMasonFunction
-          zip_file: example/deployment.zip
+          zip_file: deployment.zip
           memory_size: 128
           timeout: 10
           handler: lambda_handler
-          role: arn:aws:iam::xxxxxxxxxxx:role/test1234
+          role: ${{ secrets.AWS_LAMBDA_ROLE_ARN }}
           runtime: python3.8
