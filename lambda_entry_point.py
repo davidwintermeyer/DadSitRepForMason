@@ -3,7 +3,8 @@ from datetime import datetime
 from pytz import timezone
 
 from constants import file_constants
-from generate_sit_rep import generate_report_for_day
+from constants.file_constants import S3_BUCKET_NAME, get_s3_key
+from generate_sit_rep import generate_report_for_day_s3
 
 
 def lambda_handler(event, context):
@@ -14,14 +15,12 @@ def lambda_handler(event, context):
 
     tz = timezone('EST')
     report_date = datetime.now(tz).date()
-    # report_date = get_days_ago(report_date, 1)
+    previous_report_date = get_days_ago(report_date, 1)
     report_time = datetime.now(tz).time()
 
-    # Currently, reads file from file_constants.SIT_REP_FILE_PATH and then overwrites it
-    # file_constants.SIT_REP_FILE_PATH
-    input_file_path = file_constants.SIT_REP_FILE_PATH
-    output_file_path = file_constants.SIT_REP_FILE_PATH
-
     # Executes the generate_report_for_day
-    generate_report_for_day(input_file_path, output_file_path, report_date, report_time)
+    previous_report_file_path = get_s3_key(previous_report_date)
+    new_report_file_path = get_s3_key(report_date)
+
+    generate_report_for_day_s3(S3_BUCKET_NAME, previous_report_file_path, new_report_file_path, report_date, report_time)
 

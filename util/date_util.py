@@ -8,7 +8,6 @@ LINUX_DATE_TIME_STR = '%-m/%-d/%Y'
 def is_windows() -> bool:
     return 'Windows' == platform.system()
 
-#
 def get_date_string() -> str:
     if is_windows():
         return WINDOWS_DATE_TIME_STR

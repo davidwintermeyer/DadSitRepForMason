@@ -8,6 +8,7 @@ from constants import sitrep_column_constants, vdh_constants
 from constants.vdh_constants import VDH_KEY_MEASURES_HOSPITALS_TOTAL_COVID_PATIENTS_DATA_COLUMN
 from util.date_util import get_date_string
 
+
 ########## Cases data ###########
 # Passing Socrata client as a param
 def get_vdh_cases_data(today_date: datetime.date, client: Socrata) -> dict:
@@ -95,7 +96,7 @@ def get_lab_report_query_string(today_date):
         # For windows, needs the # rather than the -
         # day_strings.append("'" + date.strftime('%#m/%#d/%Y') + "'")
         date_formatting_str = get_date_string()
-        day_strings.append("'" + date.strftime('%-m/%-d/%Y') + "'")
+        day_strings.append("'" + date.strftime(date_formatting_str) + "'")
 
         counter = counter + 1
 

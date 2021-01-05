@@ -1,8 +1,22 @@
 # Local filepath
 # https://openpyxl.readthedocs.io/en/stable/tutorial.html#loading-from-a-file
+from datetime import date
+
 from openpyxl.styles import NamedStyle
 
 from constants import sitrep_column_constants
+
+S3_BUCKET_NAME = 'dadsitrepformason'
+
+# Using the same format as the csse github i.e.
+# https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/01-01-2021.csv
+# key looks like Covid-19_SitRep_Data-01-01-2021.csv
+BASE_FILE_PATH = 'Covid-19_SitRep_Data-'
+EXCEL_EXTENSION = '.xlsx'
+
+def get_s3_key(report_date: date):
+    date_str = report_date.strftime('%m-%d-%Y')
+    return BASE_FILE_PATH + date_str + EXCEL_EXTENSION
 
 SIT_REP_FILE_PATH = 'Covid-19_SitRep_Data.xlsx'
 SHEET_NAME = 'Sheet1'
