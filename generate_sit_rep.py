@@ -36,6 +36,7 @@ def generate_report_for_day_s3(s3bucket: str, previous_report_file_path: str, ne
         column_title_to_value_dict[column_title] = NO_DATA
 
     # Load the workbook
+    print("downloading file from bucket: " + s3bucket + " with key: " + previous_report_file_path)
     file = download_file(bucket=s3bucket, key=previous_report_file_path)
     wb = load_workbook(file)
     # Pull the sheet
@@ -53,7 +54,11 @@ def generate_report_for_day_s3(s3bucket: str, previous_report_file_path: str, ne
             cell.style = STYLE_DICT[column_title]
 
     # Save the workbook
-    wb.save(filename='tmp/' + new_report_file_path)
+    filepath = '/tmp/' + new_report_file_path
+    print("saving file locally: to path: " + filepath)
+    wb.save(filename=filepath)
+
+    print("uploading file to bucket: " + s3bucket + " with key: " + new_report_file_path)
     upload_workbook(workbook=wb, bucket=s3bucket, key=new_report_file_path)
 
 
