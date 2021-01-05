@@ -1,4 +1,5 @@
 import datetime
+import traceback
 
 import pandas as pd
 from sodapy import Socrata
@@ -149,17 +150,22 @@ def get_vdh_current_hospitalization_data(today_date: datetime.date, client: Socr
     return hospitalizations_data_dict
 
 def get_vdh_data(today_date: datetime.date) -> dict:
-    client = Socrata(vdh_constants.VDH_DATA_URL, vdh_constants.VDH_APP_TOKEN)
 
-    result = {}
+    print("running get_vdh_data")
+    try:
+        client = Socrata(vdh_constants.VDH_DATA_URL, vdh_constants.VDH_APP_TOKEN)
 
-    vdh_cases_data = get_vdh_cases_data(today_date, client)
-    result.update(vdh_cases_data)
+        result = {}
 
-    vdh_testing_data = get_vdh_testing_data(today_date, client)
-    result.update(vdh_testing_data)
+        vdh_cases_data = get_vdh_cases_data(today_date, client)
+        result.update(vdh_cases_data)
 
-    vdh_hospitalization_data = get_vdh_current_hospitalization_data(today_date, client)
-    result.update(vdh_hospitalization_data)
+        vdh_testing_data = get_vdh_testing_data(today_date, client)
+        result.update(vdh_testing_data)
 
-    return result
+        vdh_hospitalization_data = get_vdh_current_hospitalization_data(today_date, client)
+        result.update(vdh_hospitalization_data)
+
+        return result
+    except:
+        traceback.print_exc()

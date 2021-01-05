@@ -9,6 +9,9 @@ def lambda_handler(event, context):
     # Set Current date and time
     from util.date_util import get_days_ago
 
+    print("lambda_handler invoked with event: " + json.dumps(event))
+    print("lambda_handler invoked with context: " + json.dumps(context))
+
     tz = timezone('EST')
     report_date = datetime.now(tz).date()
     # report_date = get_days_ago(report_date, 1)
