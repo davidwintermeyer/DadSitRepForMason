@@ -24,7 +24,7 @@ jobs:
           python -m pip install --no-cache-dir --target . requests
           python -m pip install --no-cache-dir --target . pandas
           python -m pip install --no-cache-dir --target . sodapy
-          python -m pip install --no-cache-dir --target . jdcal
+          python -m pip install --no-cache-dir --target . jdcal-1.0.tar.gz
           python -m pip install --no-cache-dir --target . et_xmlfile
           python -m pip install --no-cache-dir --target . openpyxl
 
