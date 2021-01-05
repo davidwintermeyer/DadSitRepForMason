@@ -24,7 +24,7 @@ jobs:
           python -m pip install --no-cache-dir --target . requests
           python -m pip install --no-cache-dir --target . pandas
           python -m pip install --no-cache-dir --target . sodapy
-          python -m pip install --no-cache-dir --target . jdcal-1.0.tar.gz
+          python -m pip install --no-cache-dir --target . jdcal
           python -m pip install --no-cache-dir --target . et_xmlfile
           python -m pip install --no-cache-dir --target . openpyxl
 
@@ -32,7 +32,7 @@ jobs:
       # https://github.com/maromatorio/Menshen/blob/c311f3272259f034197f2c72b7ef513956039290/.github/workflows/deploy.yml
       - name: Zip the function code
         run: |
-          zip -r deployment.zip lambda_entry_point.py generate_sit_rep.py Covid-19_SitRep_Data.xlsx dependencies util constants pytz requests pandas sodapy jdcal et_xmlfile openpyxl
+          zip -r deployment.zip lambda_entry_point.py generate_sit_rep.py Covid-19_SitRep_Data.xlsx dependencies util constants pytz requests pandas sodapy jdcal.py et_xmlfile openpyxl
       - name: default deploy
         uses: appleboy/lambda-action@master
         with:
