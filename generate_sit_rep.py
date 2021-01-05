@@ -1,6 +1,6 @@
 from datetime import date, time
 from constants import file_constants, sitrep_column_constants
-from constants.sitrep_column_constants import column_title_to_letter_dicts
+from constants.sitrep_column_constants import column_title_to_letter_dicts, NO_DATA_COLUMNS, NO_DATA
 from util.excel_util import get_last_row, get_cell
 from openpyxl import load_workbook
 
@@ -16,9 +16,13 @@ def generate_report_for_day(input_file_path: str, output_file_path: str, report_
     column_title_to_value_dict[sitrep_column_constants.DATE_COLUMN] = report_date
     column_title_to_value_dict[sitrep_column_constants.TIME_COLUMN] = report_time
 
+    # vdh Data
     vdh_dict = get_vdh_data(report_date)
-
     column_title_to_value_dict.update(vdh_dict)
+
+    # Write in No Data
+    for column_title in NO_DATA_COLUMNS :
+        column_title_to_value_dict[column_title] = NO_DATA
 
     # Load the workbook
     wb = load_workbook(filename=input_file_path, data_only=True)

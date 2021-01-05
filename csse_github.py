@@ -2,7 +2,7 @@ import pandas as pd
 import io
 import requests
 
-from constants import constant
+from constants import csse_data_constants
 
 
 # Global Cases,
@@ -17,4 +17,4 @@ def get_csse_data(url: str):
     print(df.head())
     return
 
-get_csse_data(constant.CSSE_GIT_HUB_URL)
+get_csse_data(csse_data_constants.CSSE_GIT_HUB_URL)
