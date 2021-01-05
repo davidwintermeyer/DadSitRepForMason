@@ -63,6 +63,7 @@ def send_report_as_attachment(report_date: date, report_local_path: str, email_r
     # Display an error if something goes wrong.
     except ClientError as e:
         print(e.response['Error']['Message'])
+        raise e
     else:
         print("Email sent! Message ID:"),
         print(response['MessageId'])
