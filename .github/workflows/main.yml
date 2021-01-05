@@ -20,7 +20,7 @@ jobs:
       # https://github.com/svthalia/what-are-we-eating-today/blob/5c4a38017516636910e8751ff044597265613b62/.github/workflows/deploy.yaml
       # https://github.com/maromatorio/Menshen/blob/c311f3272259f034197f2c72b7ef513956039290/.github/workflows/deploy.yml
       - name: Zip the function
-        run: zip -r deployment.zip lambda_entry_point.py
+        run: zip -r deployment.zip lambda_handler.py
       - name: default deploy
         uses: appleboy/lambda-action@master
         with:
