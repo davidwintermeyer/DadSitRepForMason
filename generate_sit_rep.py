@@ -1,19 +1,18 @@
 from datetime import date, time
 
-from openpyxl.styles import NamedStyle
+from openpyxl import load_workbook
 
 from constants import file_constants, sitrep_column_constants
 from constants.file_constants import STYLE_DICT
-from constants.sitrep_column_constants import column_title_to_letter_dicts, NO_DATA_COLUMNS, NO_DATA, DATE_COLUMN
-from csse_github import get_csse_data
+from constants.sitrep_column_constants import column_title_to_letter_dicts, NO_DATA_COLUMNS, NO_DATA
+from dependencies.csse_github import get_csse_data
 from util.excel_util import get_last_row, get_cell
-from openpyxl import load_workbook
-
 # Given an input file path to an existing sitrep excel file,
 # adds a new record for the report_date input, and writes the file to output_file_path
 # TODO: Validations?
 # If you want to overwrite the same file, set input_file_path and output_file_path to be the same.
-from vhd_soda import get_vdh_data
+from dependencies.vhd_soda import get_vdh_data
+
 
 def generate_report_for_day(input_file_path: str, output_file_path: str, report_date: date, report_time: time):
 
