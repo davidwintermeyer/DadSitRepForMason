@@ -144,7 +144,7 @@ def get_vdh_current_hospitalization_data(today_date: datetime.date, client: Socr
     hospitalizations_query_string = "date = '" + str(today_date) + "'"
 
     hospitalizations_data = client.get(vdh_constants.VDH_KEY_MEASURES_HOSPITALS_DATA_ENDPOINT, where=hospitalizations_query_string)
-    hospitalizations_data_dict[sitrep_column_constants.VA_PRESENT_HOSPITALIZATIONS_CURRENT_COLUMN] = hospitalizations_data[0][VDH_KEY_MEASURES_HOSPITALS_TOTAL_COVID_PATIENTS_DATA_COLUMN]
+    hospitalizations_data_dict[sitrep_column_constants.VA_PRESENT_HOSPITALIZATIONS_CURRENT_COLUMN] = int(hospitalizations_data[0][VDH_KEY_MEASURES_HOSPITALS_TOTAL_COVID_PATIENTS_DATA_COLUMN])
 
     return hospitalizations_data_dict
 

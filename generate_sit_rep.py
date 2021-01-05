@@ -1,6 +1,10 @@
 from datetime import date, time
+
+from openpyxl.styles import NamedStyle
+
 from constants import file_constants, sitrep_column_constants
-from constants.sitrep_column_constants import column_title_to_letter_dicts, NO_DATA_COLUMNS, NO_DATA
+from constants.file_constants import STYLE_DICT
+from constants.sitrep_column_constants import column_title_to_letter_dicts, NO_DATA_COLUMNS, NO_DATA, DATE_COLUMN
 from csse_github import get_csse_data
 from util.excel_util import get_last_row, get_cell
 from openpyxl import load_workbook
@@ -43,6 +47,8 @@ def generate_report_for_day(input_file_path: str, output_file_path: str, report_
     for column_title, column_letter in column_title_to_letter_dicts.items():
         cell = sheet[get_cell(column_letter, last_row_number)]
         cell.value = column_title_to_value_dict[column_title]
+        if (column_title in STYLE_DICT):
+            cell.style = STYLE_DICT[column_title]
 
     # Save the workbook
     wb.save(filename=output_file_path)
