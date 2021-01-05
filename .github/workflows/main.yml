@@ -44,7 +44,7 @@ jobs:
           aws_region: ${{ secrets.AWS_REGION }}
           function_name: DadSitRepForMasonFunction
           zip_file: deployment.zip
-          memory_size: 128
+          memory_size: 512
           timeout: 10
           handler: lambda_entry_point.lambda_handler
           role: ${{ secrets.AWS_LAMBDA_ROLE_ARN }}
