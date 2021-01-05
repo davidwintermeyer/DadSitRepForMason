@@ -16,8 +16,8 @@ from dependencies.vhd_soda import get_vdh_data
 #
 from util.s3_util import download_file, upload_workbook
 
-
-def generate_report_for_day_s3(s3bucket: str, previous_report_file_path: str, new_report_file_path: str, report_date: date, report_time: time):
+# returns path of the file
+def generate_report_for_day_s3(s3bucket: str, previous_report_s3_key: str, new_report_s3_key: str, report_date: date, report_time: time) -> str:
 
     column_title_to_value_dict = {}
     column_title_to_value_dict[sitrep_column_constants.DATE_COLUMN] = report_date
@@ -36,8 +36,9 @@ def generate_report_for_day_s3(s3bucket: str, previous_report_file_path: str, ne
         column_title_to_value_dict[column_title] = NO_DATA
 
     # Load the workbook
-    print("downloading file from bucket: " + s3bucket + " with key: " + previous_report_file_path)
-    file = download_file(bucket=s3bucket, key=previous_report_file_path)
+    print("downloading file from bucket: " + s3bucket + " with key: " + previous_report_s3_key)
+    file = download_file(bucket=s3bucket, key=previous_report_s3_key)
+
     wb = load_workbook(file)
     # Pull the sheet
     sheet = wb[file_constants.SHEET_NAME]
@@ -54,12 +55,14 @@ def generate_report_for_day_s3(s3bucket: str, previous_report_file_path: str, ne
             cell.style = STYLE_DICT[column_title]
 
     # Save the workbook
-    filepath = '/tmp/' + new_report_file_path
-    print("saving file locally: to path: " + filepath)
-    wb.save(filename=filepath)
+    local_filepath = '/tmp/' + new_report_s3_key
+    print("saving file locally to path: " + local_filepath)
+    wb.save(filename=local_filepath)
 
-    print("uploading file to bucket: " + s3bucket + " with key: " + new_report_file_path)
-    upload_workbook(workbook=wb, bucket=s3bucket, key=new_report_file_path)
+    print("uploading file to bucket: " + s3bucket + " with key: " + new_report_s3_key)
+    upload_workbook(workbook=wb, bucket=s3bucket, key=new_report_s3_key)
+
+    return local_filepath
 
 
 def generate_report_for_day_write_file_locally(input_file_path: str, output_file_path: str, report_date: date, report_time: time):

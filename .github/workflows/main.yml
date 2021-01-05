@@ -28,6 +28,7 @@ jobs:
           python -m pip install --no-cache-dir --target . et_xmlfile
           python -m pip install --no-cache-dir --target . openpyxl
           python -m pip install --no-cache-dir --target . numpy
+          python -m pip install --no-cache-dir --target . email
           python -m pip install --no-cache-dir --target . boto3
           python -m pip install --no-cache-dir --target . botocore
 
