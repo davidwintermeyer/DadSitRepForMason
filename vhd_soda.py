@@ -1,10 +1,10 @@
-import pandas as pd
-
 import datetime
+
+import pandas as pd
 from sodapy import Socrata
 
-import constants.vdh_constants
-from constants import constant, sitrep_column_constants, vdh_constants
+from constants import sitrep_column_constants, vdh_constants
+from util.date_util import get_date_string
 
 
 # Looking at the metadata for the data
@@ -15,7 +15,7 @@ from constants import constant, sitrep_column_constants, vdh_constants
 # single day: "lab_report_date = '1/3/2021'"
 # No zero padding
 # https://www.programiz.com/python-programming/datetime/strftime
-# Not sure when this gets posted, because I'm only seeing
+# If windows, '%#m/%#d/%Y'
 # lab_report_query_string = "lab_report_date = '" + today_date.strftime('%-m/%-d/%Y') + "'"
 def get_lab_report_query_string(today_date):
 
@@ -23,7 +23,11 @@ def get_lab_report_query_string(today_date):
     counter = 0
     while counter < vdh_constants.NUMBER_OF_DAYS_TO_INCLUDE_IN_TESTING_DATA:
         date = today_date - datetime.timedelta(days=counter)
+        # For windows, needs the # rather than the -
+        # day_strings.append("'" + date.strftime('%#m/%#d/%Y') + "'")
+        date_formatting_str = get_date_string()
         day_strings.append("'" + date.strftime('%-m/%-d/%Y') + "'")
+
         counter = counter + 1
 
     return "lab_report_date IN (" + ",".join(day_strings) + ")"
