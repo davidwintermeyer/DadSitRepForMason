@@ -1,5 +1,6 @@
 import json
-from datetime import timezone, datetime
+from datetime import datetime
+from pytz import timezone
 
 from constants import file_constants
 from generate_sit_rep import generate_report_for_day
