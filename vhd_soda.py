@@ -4,6 +4,7 @@ import pandas as pd
 from sodapy import Socrata
 
 from constants import sitrep_column_constants, vdh_constants
+from constants.vdh_constants import VDH_KEY_MEASURES_HOSPITALS_TOTAL_COVID_PATIENTS_DATA_COLUMN
 from util.date_util import get_date_string
 
 ########## Cases data ###########
@@ -137,6 +138,16 @@ def get_vdh_testing_data(today_date: datetime.date, client: Socrata) -> dict:
 
     return testing_data_dict
 
+def get_vdh_current_hospitalization_data(today_date: datetime.date, client: Socrata) -> dict:
+    hospitalizations_data_dict = {}
+
+    hospitalizations_query_string = "date = '" + str(today_date) + "'"
+
+    hospitalizations_data = client.get(vdh_constants.VDH_KEY_MEASURES_HOSPITALS_DATA_ENDPOINT, where=hospitalizations_query_string)
+    hospitalizations_data_dict[sitrep_column_constants.VA_PRESENT_HOSPITALIZATIONS_CURRENT_COLUMN] = hospitalizations_data[0][VDH_KEY_MEASURES_HOSPITALS_TOTAL_COVID_PATIENTS_DATA_COLUMN]
+
+    return hospitalizations_data_dict
+
 def get_vdh_data(today_date: datetime.date) -> dict:
     client = Socrata(vdh_constants.VDH_DATA_URL, vdh_constants.VDH_APP_TOKEN)
 
@@ -148,7 +159,7 @@ def get_vdh_data(today_date: datetime.date) -> dict:
     vdh_testing_data = get_vdh_testing_data(today_date, client)
     result.update(vdh_testing_data)
 
-
-
+    vdh_hospitalization_data = get_vdh_current_hospitalization_data(today_date, client)
+    result.update(vdh_hospitalization_data)
 
     return result

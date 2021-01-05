@@ -25,3 +25,4 @@ VDH_LAB_REPORT_HEALTH_DISTRICT_DATA_COLUMN = 'health_district'
 # Hospitals
 # https://data.virginia.gov/Government/VDH-COVID-19-PublicUseDataset-KeyMeasures-Hospital/28wk-762y
 VDH_KEY_MEASURES_HOSPITALS_DATA_ENDPOINT = '28wk-762y'
+VDH_KEY_MEASURES_HOSPITALS_TOTAL_COVID_PATIENTS_DATA_COLUMN = 'total_covid_19_patients'

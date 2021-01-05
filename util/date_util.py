@@ -1,3 +1,4 @@
+import datetime
 import platform
 
 WINDOWS_DATE_TIME_STR = '%#m/%#d/%Y'
@@ -12,5 +13,8 @@ def get_date_string() -> str:
     if is_windows():
         return WINDOWS_DATE_TIME_STR
     return LINUX_DATE_TIME_STR
+
+def get_days_ago(base_date: datetime.date, days_ago: int) -> datetime.date:
+    return base_date - datetime.timedelta(days=days_ago)
 
 
