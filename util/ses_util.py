@@ -11,7 +11,6 @@ from typing import List
 
 from constants.email_constants import AWS_REGION, SENDER, get_subject, RECIPIENT, BODY_TEXT, CHARSET, BODY_HTML
 
-
 def send_report_as_attachment(report_date: date, report_local_path: str, email_recipients: List[str]):
     # Create a new SES resource and specify a region.
     client = boto3.client('ses', region_name=AWS_REGION)
@@ -21,7 +20,7 @@ def send_report_as_attachment(report_date: date, report_local_path: str, email_r
     # Add subject, from and to lines.
     msg['Subject'] = get_subject(report_date)
     msg['From'] = SENDER
-    msg['To'] = RECIPIENT
+    msg['To'] = ' '.join(map(str, email_recipients))
 
     # Create a multipart/alternative child container.
     msg_body = MIMEMultipart('alternative')
