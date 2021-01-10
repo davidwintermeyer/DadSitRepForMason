@@ -1,7 +1,8 @@
 from datetime import date
 
 EMAIL_RECIPIENTS = [
-    'dwint94@gmail.com'
+    'dwint94@gmail.com',
+    'david.wintermeyer@gmail.com'
 ]
 
 RECIPIENT = 'dwint94@gmail.com'
