@@ -20,7 +20,7 @@ def send_report_as_attachment(report_date: date, report_local_path: str, email_r
     # Add subject, from and to lines.
     msg['Subject'] = get_subject(report_date)
     msg['From'] = SENDER
-    msg['To'] = ' '.join(map(str, email_recipients))
+    msg['To'] = RECIPIENT
 
     # Create a multipart/alternative child container.
     msg_body = MIMEMultipart('alternative')
