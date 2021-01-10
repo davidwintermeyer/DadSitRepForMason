@@ -3,7 +3,7 @@ from datetime import date, time
 from openpyxl import load_workbook
 
 from constants import file_constants, sitrep_column_constants
-from constants.file_constants import STYLE_DICT
+from constants.file_constants import COLUMN_NAME_TO_STYLE_NAME_DICT, STYLE_NAME_TO_STYLE_DICT
 from constants.sitrep_column_constants import column_title_to_letter_dicts, NO_DATA_COLUMNS, NO_DATA
 from dependencies.csse_github import get_csse_data
 from util.excel_util import get_last_row, get_cell
@@ -40,6 +40,14 @@ def generate_report_for_day_s3(s3bucket: str, previous_report_s3_key: str, new_r
     file = download_file(bucket=s3bucket, key=previous_report_s3_key)
 
     wb = load_workbook(file)
+
+    # https://openpyxl.readthedocs.io/en/stable/api/openpyxl.workbook.workbook.html
+    # check if style names are registered, and if not, register
+    workbook_style_names = wb.style_names
+    for style_name in STYLE_NAME_TO_STYLE_DICT.keys():
+        if style_name not in workbook_style_names:
+            wb.add_named_style(STYLE_NAME_TO_STYLE_DICT[style_name])
+
     # Pull the sheet
     sheet = wb[file_constants.SHEET_NAME]
 
@@ -51,8 +59,8 @@ def generate_report_for_day_s3(s3bucket: str, previous_report_s3_key: str, new_r
     for column_title, column_letter in column_title_to_letter_dicts.items():
         cell = sheet[get_cell(column_letter, last_row_number)]
         cell.value = column_title_to_value_dict[column_title]
-        if (column_title in STYLE_DICT):
-            cell.style = STYLE_DICT[column_title]
+        if column_title in COLUMN_NAME_TO_STYLE_NAME_DICT:
+            cell.style = COLUMN_NAME_TO_STYLE_NAME_DICT[column_title]
 
     # Save the workbook
     local_filepath = '/tmp/' + new_report_s3_key
@@ -86,6 +94,12 @@ def generate_report_for_day_write_file_locally(input_file_path: str, output_file
     # Load the workbook
     wb = load_workbook(filename=input_file_path, data_only=True)
 
+    # check if style names are registered, and if not, register
+    workbook_style_names = wb.style_names
+    for style_name in STYLE_NAME_TO_STYLE_DICT.keys():
+        if style_name not in workbook_style_names:
+            wb.add_named_style(STYLE_NAME_TO_STYLE_DICT[style_name])
+
     # Pull the sheet
     sheet = wb[file_constants.SHEET_NAME]
 
@@ -97,8 +111,8 @@ def generate_report_for_day_write_file_locally(input_file_path: str, output_file
     for column_title, column_letter in column_title_to_letter_dicts.items():
         cell = sheet[get_cell(column_letter, last_row_number)]
         cell.value = column_title_to_value_dict[column_title]
-        if (column_title in STYLE_DICT):
-            cell.style = STYLE_DICT[column_title]
+        if column_title in COLUMN_NAME_TO_STYLE_NAME_DICT:
+            cell.style = COLUMN_NAME_TO_STYLE_NAME_DICT[column_title]
 
     # Save the workbook
     wb.save(filename=output_file_path)
