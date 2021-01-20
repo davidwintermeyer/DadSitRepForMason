@@ -14,9 +14,11 @@ S3_BUCKET_NAME = 'dadsitrepformason'
 BASE_FILE_PATH = 'Covid-19_SitRep_Data-'
 EXCEL_EXTENSION = '.xlsx'
 
+
 def get_s3_key(report_date: date):
     date_str = report_date.strftime('%m-%d-%Y')
     return BASE_FILE_PATH + date_str + EXCEL_EXTENSION
+
 
 SIT_REP_FILE_PATH = 'Covid-19_SitRep_Data-01-19-2021.xlsx'
 SHEET_NAME = 'Sheet1'
@@ -50,20 +52,41 @@ COLUMN_NAME_TO_STYLE_NAME_DICT = {
     sitrep_column_constants.GLOBAL_DEATHS_COLUMN: NUMBER_STYLE_NAME,
     sitrep_column_constants.US_CASES_COLUMN: NUMBER_STYLE_NAME,
     sitrep_column_constants.US_DEATHS_COLUMN: NUMBER_STYLE_NAME,
+
     sitrep_column_constants.VA_CASES_TOTAL_COLUMN: NUMBER_STYLE_NAME,
+    sitrep_column_constants.VA_CASES_CHANGE_PREVIOUS_DAY_COLUMN: NUMBER_STYLE_NAME,
     sitrep_column_constants.VA_POSITIVE_TEST_RATE_COLUMN: PERCENT_STYLE_NAME,
+    sitrep_column_constants.VA_POSITIVE_TEST_RATE_CHANGE_SINCE_PREVIOUS_DAY_COLUMN: PERCENT_STYLE_NAME,
     sitrep_column_constants.VA_DEATHS_TOTAL_COLUMN: NUMBER_STYLE_NAME,
+    sitrep_column_constants.VA_DEATHS_CHANGE_SINCE_PREVIOUS_DAY_COLUMN: NUMBER_STYLE_NAME,
     sitrep_column_constants.VA_PRESENT_HOSPITALIZATIONS_CURRENT_COLUMN: NUMBER_STYLE_NAME,
+    sitrep_column_constants.VA_PRESENT_HOSPITALIZATIONS_CHANGE_SINCE_PREVIOUS_DAY_COLUMN: NUMBER_STYLE_NAME,
+
     sitrep_column_constants.FAIRFAX_CASES_COLUMN: NUMBER_STYLE_NAME,
+    sitrep_column_constants.FAIRFAX_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN: NUMBER_STYLE_NAME,
     sitrep_column_constants.FAIRFAX_POSITIVE_TEST_RATE_COLUMN: PERCENT_STYLE_NAME,
+    sitrep_column_constants.FAIRFAX_POSITIVE_TEST_RATE_CHANGE_SINCE_PREVIOUS_DAY_COLUMN: PERCENT_STYLE_NAME,
     sitrep_column_constants.FAIRFAX_HOSPITALIZATIONS_COLUMN: NUMBER_STYLE_NAME,
     sitrep_column_constants.FAIRFAX_DEATHS_COLUMN: NUMBER_STYLE_NAME,
+
     sitrep_column_constants.ARLINGTON_CASES_COLUMN: NUMBER_STYLE_NAME,
+    sitrep_column_constants.ARLINGTON_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN: NUMBER_STYLE_NAME,
     sitrep_column_constants.ARLINGTON_POSITIVE_TEST_RATE_COLUMN: PERCENT_STYLE_NAME,
+    sitrep_column_constants.ARLINGTON_TEST_RATE_CHANGE_SINCE_PREVIOUS_DAY_COLUMN: PERCENT_STYLE_NAME,
     sitrep_column_constants.ARLINGTON_HOSPITALIZATIONS_COLUMN: NUMBER_STYLE_NAME,
     sitrep_column_constants.ARLINGTON_DEATHS_COLUMN: NUMBER_STYLE_NAME,
+
     sitrep_column_constants.PW_CASES_COLUMN: NUMBER_STYLE_NAME,
+    sitrep_column_constants.PW_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN: NUMBER_STYLE_NAME,
     sitrep_column_constants.PW_POSITIVE_TEST_RATE_COLUMN: PERCENT_STYLE_NAME,
+    sitrep_column_constants.PW_POSITIVE_TEST_RATE_CHANGE_SINCE_PREVIOUS_DAY_COLUMN: PERCENT_STYLE_NAME,
     sitrep_column_constants.PW_HOSPITALIZATIONS_COLUMN: NUMBER_STYLE_NAME,
     sitrep_column_constants.PW_DEATHS_COLUMN: NUMBER_STYLE_NAME
 }
+
+
+# 1/5/2021 is hardcoded as row 92
+def get_row_number(report_date: date) -> int:
+    f_date = date(2021, 1, 5)
+    delta = report_date - f_date
+    return 92 + delta.days
