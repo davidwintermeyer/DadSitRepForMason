@@ -18,7 +18,7 @@ def get_s3_key(report_date: date):
     date_str = report_date.strftime('%m-%d-%Y')
     return BASE_FILE_PATH + date_str + EXCEL_EXTENSION
 
-SIT_REP_FILE_PATH = 'Covid-19_SitRep_Data.xlsx'
+SIT_REP_FILE_PATH = 'Covid-19_SitRep_Data-01-19-2021.xlsx'
 SHEET_NAME = 'Sheet1'
 
 # Formatting
