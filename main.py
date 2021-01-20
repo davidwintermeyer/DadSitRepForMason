@@ -10,7 +10,7 @@ from util.date_util import get_days_ago
 
 tz = timezone('EST')
 report_date = datetime.now(tz).date()
-report_date = get_days_ago(report_date, 7)
+# report_date = get_days_ago(report_date, 7)
 report_time = datetime.now(tz).time()
 
 # Currently, reads file from file_constants.SIT_REP_FILE_PATH and then overwrites it
