@@ -42,7 +42,7 @@ def generate_report_for_day_s3(s3bucket: str, previous_report_s3_key: str, new_r
 def generate_report_for_day_write_file_locally(input_file_path: str, output_file_path: str, report_date: date, report_time: time):
 
     # Load the workbook
-    wb = load_workbook(filename=input_file_path, data_only=True)
+    wb = load_workbook(filename=input_file_path)
 
     # Should update the wb itself
     update_workbook_with_new_record(wb=wb, report_date=report_date, report_time=report_time)
