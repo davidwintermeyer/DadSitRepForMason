@@ -11,16 +11,19 @@ S3_BUCKET_NAME = 'dadsitrepformason'
 # Using the same format as the csse github i.e.
 # https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/01-01-2021.csv
 # key looks like Covid-19_SitRep_Data-01-01-2021.csv
-BASE_FILE_PATH = 'Covid-19_SitRep_Data-'
+V2_STRING = 'V2'
+FILE_NAME_PREFIX = 'Covid-19_SitRep_Data-V2-'
 EXCEL_EXTENSION = '.xlsx'
 
 
 def get_s3_key(report_date: date):
+    return V2_STRING + '/' + get_file_name(report_date)
+
+
+def get_file_name(report_date: date) -> str:
     date_str = report_date.strftime('%m-%d-%Y')
-    return BASE_FILE_PATH + date_str + EXCEL_EXTENSION
+    return FILE_NAME_PREFIX + date_str + EXCEL_EXTENSION
 
-
-SIT_REP_FILE_PATH = 'Covid-19_SitRep_Data-01-19-2021.xlsx'
 SHEET_NAME = 'Sheet1'
 
 # Formatting

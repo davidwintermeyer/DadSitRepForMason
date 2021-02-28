@@ -161,8 +161,9 @@ def get_vdh_data(today_date: datetime.date) -> dict:
         vdh_cases_data = get_vdh_cases_data(today_date, client)
         result.update(vdh_cases_data)
 
-        vdh_testing_data = get_vdh_testing_data(today_date, client)
-        result.update(vdh_testing_data)
+        # Per Email Feb 2021, I won't populate the test values, but leave the columns in for dad to populate
+        # vdh_testing_data = get_vdh_testing_data(today_date, client)
+        # result.update(vdh_testing_data)
 
         vdh_hospitalization_data = get_vdh_current_hospitalization_data(today_date, client)
         result.update(vdh_hospitalization_data)

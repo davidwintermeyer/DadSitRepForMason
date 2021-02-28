@@ -3,7 +3,7 @@ from datetime import date, time
 from openpyxl import load_workbook, Workbook
 
 from constants import file_constants, sitrep_column_constants
-from constants.file_constants import COLUMN_NAME_TO_STYLE_NAME_DICT, STYLE_NAME_TO_STYLE_DICT
+from constants.file_constants import COLUMN_NAME_TO_STYLE_NAME_DICT, STYLE_NAME_TO_STYLE_DICT, get_file_name
 from constants.sitrep_column_constants import column_title_to_letter_dicts, NO_DATA_COLUMNS, NO_DATA
 from dependencies.csse_github import get_csse_data
 from util.excel_util import get_last_row, get_cell
@@ -29,7 +29,7 @@ def generate_report_for_day_s3(s3bucket: str, previous_report_s3_key: str, new_r
     update_workbook_with_new_record(wb=wb, report_date=report_date, report_time=report_time)
 
     # Save the workbook
-    local_filepath = '/tmp/' + new_report_s3_key
+    local_filepath = '/tmp/' + get_file_name(report_date)
     print("saving file locally to path: " + local_filepath)
     wb.save(filename=local_filepath)
 
