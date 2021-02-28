@@ -36,5 +36,5 @@ def get_csse_data(report_date: date) -> dict:
         csse_data_dict[sitrep_column_constants.US_DEATHS_COLUMN] = us_csse_data_df[csse_data_constants.DEATHS_DATA_COLUMN].sum()
 
         return csse_data_dict
-    except:
-        traceback.print_exc()
+    except Exception as exc:
+        raise RuntimeError('Failed to get CSSE Data') from exc

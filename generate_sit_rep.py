@@ -21,7 +21,11 @@ def generate_report_for_day_s3(s3bucket: str, previous_report_s3_key: str, new_r
 
     # Load the workbook
     print("downloading file from bucket: " + s3bucket + " with key: " + previous_report_s3_key)
-    file = download_file(bucket=s3bucket, key=previous_report_s3_key)
+    # https://stackoverflow.com/questions/17195569/using-a-variable-in-a-try-catch-finally-statement-without-declaring-it-outside
+    try:
+        file = download_file(bucket=s3bucket, key=previous_report_s3_key)
+    except Exception as exc:
+        raise RuntimeError('Failed to get sit from previous day. Key: ' + previous_report_s3_key) from exc
 
     wb = load_workbook(file)
 
