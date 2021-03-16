@@ -91,6 +91,6 @@ jobs:
           zip_file: email_template_generator_deployment.zip
           memory_size: 512
           timeout: 10
-          handler: email_template_generator_entry_point.email_template_generator_handler
+          handler: email_template_generator/email_template_generator_entry_point.email_template_generator_handler
           role: ${{ secrets.AWS_LAMBDA_ROLE_ARN }}
           runtime: python3.8
