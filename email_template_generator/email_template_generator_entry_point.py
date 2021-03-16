@@ -1,6 +1,6 @@
 import json
 
 
-def report_generating_lambda_handler(event, context):
-    print("report_generating_lambda_handler invoked with event: " + json.dumps(event))
+def email_template_generator_handler(event, context):
+    print("email_template_generator_handler invoked with event: " + json.dumps(event))
 
