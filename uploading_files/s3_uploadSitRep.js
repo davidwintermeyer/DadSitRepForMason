@@ -30,6 +30,7 @@
 var albumBucketName = "dadsitrepformason-public.com";
 var bucketRegion = "us-east-1";
 var IdentityPoolId = "us-east-1:af4f2e31-154d-4897-8646-44580544a597";
+var sitRepFolder = 'uploadedSitReps'
 
 AWS.config.update({
   region: bucketRegion,
@@ -44,8 +45,7 @@ var s3 = new AWS.S3({
 });
 // snippet-end:[s3.JavaScript.photoAlbumExample.config]
 
-// snippet-start:[s3.JavaScript.photoAlbumExample.listAlbums]
-function listAlbums() {
+function uploadSitRepEntryPoint() {
   s3.listObjects({ Delimiter: "/" }, function(err, data) {
     if (err) {
       return alert("There was an error listing your albums: " + err.message);
@@ -74,92 +74,48 @@ function listAlbums() {
         "<ul>",
         getHtml(albums),
         "</ul>",
-        "<button onclick=\"createAlbum(prompt('Enter Album Name:'))\">",
-        "Create New Album",
+        '<input id="sitrepupload" type="file" accept="application/*">',
+        "<button onclick=\"uploadSitRep()\">",
+        "Upload Sit Rep",
         "</button>"
       ];
       document.getElementById("app").innerHTML = getHtml(htmlTemplate);
     }
   });
 }
-// snippet-end:[s3.JavaScript.photoAlbumExample.listAlbums]
 
+//// snippet-start:[s3.JavaScript.uploadSitRepEntryPoint]
+//function uploadSitRepEntryPoint() {
+//  var htmlTemplate = [
+//    "<h2>Upload Button</h2>",
+//    "Click the button to upload the sitrep",
+//    // https://stackoverflow.com/questions/11832930/html-input-file-accept-attribute-file-type-csv
+//    '<input id="sitrepupload" type="file" accept="application/*">',
+//    "<button onclick=\"uploadSitRep(prompt('Upload Sit Rep:'))\">",
+//    "Upload Sit Rep",
+//    "</button>"
+//  ];
+//  document.getElementById("app").innerHTML = getHtml(htmlTemplate);
+//}
+//// snippet-end:[s3.JavaScript.uploadSitRepEntryPoint]
 
-// snippet-start:[s3.JavaScript.photoAlbumExample.viewAlbum]
-function viewAlbum(albumName) {
-  var albumPhotosKey = encodeURIComponent(albumName) + "/";
-  s3.listObjects({ Prefix: albumPhotosKey }, function(err, data) {
-    if (err) {
-      return alert("There was an error viewing your album: " + err.message);
-    }
-    // 'this' references the AWS.Response instance that represents the response
-    var href = this.request.httpRequest.endpoint.href;
-    var bucketUrl = href + albumBucketName + "/";
-
-    var photos = data.Contents.map(function(photo) {
-      var photoKey = photo.Key;
-      var photoUrl = bucketUrl + encodeURIComponent(photoKey);
-      return getHtml([
-        "<span>",
-        "<div>",
-        '<img style="width:128px;height:128px;" src="' + photoUrl + '"/>',
-        "</div>",
-        "<div>",
-        "<span onclick=\"deletePhoto('" +
-          albumName +
-          "','" +
-          photoKey +
-          "')\">",
-        "X",
-        "</span>",
-        "<span>",
-        photoKey.replace(albumPhotosKey, ""),
-        "</span>",
-        "</div>",
-        "</span>"
-      ]);
-    });
-    var message = photos.length
-      ? "<p>Click on the X to delete the photo</p>"
-      : "<p>You do not have any photos in this album. Please add photos.</p>";
-    var htmlTemplate = [
-      "<h2>",
-      "Album: " + albumName,
-      "</h2>",
-      message,
-      "<div>",
-      getHtml(photos),
-      "</div>",
-      '<input id="photoupload" type="file" accept="image/*">',
-      '<button id="addphoto" onclick="addPhoto(\'' + albumName + "')\">",
-      "Add Photo",
-      "</button>",
-      '<button onclick="listAlbums()">',
-      "Back To Albums",
-      "</button>"
-    ];
-    document.getElementById("app").innerHTML = getHtml(htmlTemplate);
-  });
-}
-// snippet-end:[s3.JavaScript.photoAlbumExample.viewAlbum]
-
-// snippet-start:[s3.JavaScript.photoAlbumExample.addPhoto]
-function addPhoto(albumName) {
-  var files = document.getElementById("photoupload").files;
+// snippet-start:[s3.JavaScript.uploadSitRep]
+function uploadSitRep() {
+  var files = document.getElementById("sitrepupload").files;
   if (!files.length) {
     return alert("Please choose a file to upload first.");
   }
   var file = files[0];
   var fileName = file.name;
-  var albumPhotosKey = encodeURIComponent(albumName) + "/";
+  var folderKey = encodeURIComponent(sitRepFolder) + "/";
 
-  var photoKey = albumPhotosKey + fileName;
+  var sitRepKey = folderKey + fileName;
 
   // Use S3 ManagedUpload class as it supports multipart uploads
   var upload = new AWS.S3.ManagedUpload({
     params: {
       Bucket: albumBucketName,
-      Key: photoKey,
+      Key: sitRepKey,
       Body: file
     }
   });
@@ -168,14 +124,14 @@ function addPhoto(albumName) {
 
   promise.then(
     function(data) {
-      alert("Successfully uploaded photo.");
-      viewAlbum(albumName);
+      alert("Successfully uploaded sitrep photo.");
     },
     function(err) {
-      return alert("There was an error uploading your photo: ", err.message);
+      // TODO: Have an alart on this
+      return alert("There was an error uploading the sitrep: ", err.message);
     }
   );
 }
-// snippet-end:[s3.JavaScript.photoAlbumExample.addPhoto]
+// snippet-end:[s3.JavaScript.uploadSitRep]
 
 // snippet-end:[s3.JavaScript.photoAlbumExample.complete]
