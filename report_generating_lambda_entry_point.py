@@ -8,7 +8,7 @@ from util.lambda_util import get_report_date_time
 from util.ses_util import send_report_as_attachment
 from util.date_util import get_days_ago
 
-def lambda_handler(event, context):
+def report_generating_lambda_handler(event, context):
     print("lambda_handler invoked with event: " + json.dumps(event))
     report_date_time = get_report_date_time(event)
     report_date = report_date_time.date()

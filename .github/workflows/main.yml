@@ -46,6 +46,6 @@ jobs:
           zip_file: deployment.zip
           memory_size: 512
           timeout: 10
-          handler: lambda_entry_point.lambda_handler
+          handler: report_generating_lambda_entry_point.report_generating_lambda_handler
           role: ${{ secrets.AWS_LAMBDA_ROLE_ARN }}
           runtime: python3.8

@@ -4,7 +4,7 @@ from datetime import date, datetime
 from pytz import timezone
 import json
 
-from lambda_entry_point import lambda_handler
+from report_generating_lambda_entry_point import report_generating_lambda_handler
 
 os.environ["DEBUSSY"] = "1"
 os.environ["DEBUSSY"] = "1"
