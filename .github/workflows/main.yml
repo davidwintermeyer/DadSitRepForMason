@@ -4,8 +4,8 @@ name: deploy to lambda
 on: [push]
 jobs:
 
-  deploy_zip:
-    name: deploy lambda function
+  deploy_report_generating_zip:
+    name: deploy report generating lambda function
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -35,7 +35,7 @@ jobs:
       # https://github.com/maromatorio/Menshen/blob/c311f3272259f034197f2c72b7ef513956039290/.github/workflows/deploy.yml
       - name: Zip the function code
         run: |
-          zip -r deployment.zip .
+          zip -r deploy_report_generating_deployment.zip .
       - name: default deploy
         uses: appleboy/lambda-action@master
         with:
@@ -43,7 +43,52 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: ${{ secrets.AWS_REGION }}
           function_name: DadSitRepForMasonFunction
-          zip_file: deployment.zip
+          zip_file: deploy_report_generating_deployment.zip
+          memory_size: 512
+          timeout: 10
+          handler: report_generating_lambda_entry_point.report_generating_lambda_handler
+          role: ${{ secrets.AWS_LAMBDA_ROLE_ARN }}
+          runtime: python3.8
+
+  deploy_email_emplate_generator_zip:
+    name: deploy email template generator lambda function
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+      - name: checkout source code
+        uses: actions/checkout@v2
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade --no-cache-dir pip
+          python -m pip install --no-cache-dir --target . pytz
+          python -m pip install --no-cache-dir --target . requests
+          python -m pip install --no-cache-dir --target . pandas
+          python -m pip install --no-cache-dir --target . jdcal
+          python -m pip install --no-cache-dir --target . et_xmlfile
+          python -m pip install --no-cache-dir --target . openpyxl
+          python -m pip install --no-cache-dir --target . numpy
+          python -m pip install --no-cache-dir --target . boto3
+          python -m pip install --no-cache-dir --target . botocore
+
+      # https://github.com/svthalia/what-are-we-eating-today/blob/5c4a38017516636910e8751ff044597265613b62/.github/workflows/deploy.yaml
+      # https://github.com/maromatorio/Menshen/blob/c311f3272259f034197f2c72b7ef513956039290/.github/workflows/deploy.yml
+      - name: Zip the function code
+        run: |
+          zip -r email_template_generator_deployment.zip .
+      - name: default deploy
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: GenerateEmailTemplate
+          zip_file: email_template_generator_deployment.zip
           memory_size: 512
           timeout: 10
           handler: report_generating_lambda_entry_point.report_generating_lambda_handler
