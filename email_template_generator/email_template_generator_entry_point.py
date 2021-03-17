@@ -3,6 +3,7 @@ import json
 ## email_template_generator_handler invoked with event:
 from openpyxl import load_workbook
 
+from util.lambda_util import get_report_date_time
 from constants.file_constants import get_s3_key, PRIVATE_S3_BUCKET_NAME
 from util.s3_util import download_file, upload_workbook
 
