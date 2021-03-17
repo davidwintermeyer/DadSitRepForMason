@@ -3,7 +3,9 @@ import json
 ## email_template_generator_handler invoked with event:
 from openpyxl import load_workbook
 
-from util.s3_util import download_file
+from constants.file_constants import get_s3_key, PRIVATE_S3_BUCKET_NAME
+from util.s3_util import download_file, upload_workbook
+
 
 def get_bucket_and_key_from_event(event: dict) -> []:
     individual_record = event["Records"][0]
@@ -27,11 +29,17 @@ def email_template_generator_handler(event, context):
         file = download_file(bucket=source_bucket, key=source_key)
     except Exception as exc:
         raise RuntimeError('Failed to file from bucket: ' + source_bucket + ' with key: ' + source_key) from exc
+    wb = load_workbook(file)
 
     # generate the email format and share it with dad as an
+    individual_record = event["Records"][0]["eventTime"]
+    report_date_time = get_report_date_time(individual_record)
+    report_date = report_date_time.date()
 
-
-    # Write to the report bucket so we can use this file for the new one
+    # Write the report to the non-public bucket
+    new_report_s3_key = get_s3_key(report_date)
+    upload_workbook(workbook=wb, bucket=PRIVATE_S3_BUCKET_NAME, key= new_report_s3_key)
+c
 
 # Virginia/DC/Maryland
 # Virginia (case and death data from VDH.  Hospitalization data from Virginia Health and Hospital Association website/dashboard).

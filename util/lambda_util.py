@@ -16,8 +16,7 @@ import pytz
 #     ],
 #     "detail": {}
 # }
-def get_report_date_time(event: dict) -> datetime:
-    date_time_str_utc = event['time']
+def get_report_date_time(date_time_str_utc: str) -> datetime:
     unaware_date_time_obj = datetime.datetime.strptime(date_time_str_utc, '%Y-%m-%dT%H:%M:%SZ')
     now_aware_date_time_obj = unaware_date_time_obj.replace(tzinfo=pytz.UTC)
 

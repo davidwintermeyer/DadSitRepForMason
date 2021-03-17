@@ -6,7 +6,7 @@ from openpyxl.styles import NamedStyle
 
 from constants import sitrep_column_constants
 
-S3_BUCKET_NAME = 'dadsitrepformason'
+PRIVATE_S3_BUCKET_NAME = 'dadsitrepformason'
 
 # Using the same format as the csse github i.e.
 # https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/01-01-2021.csv
