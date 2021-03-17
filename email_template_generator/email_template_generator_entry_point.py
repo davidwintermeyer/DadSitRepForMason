@@ -39,7 +39,6 @@ def email_template_generator_handler(event, context):
     # Write the report to the non-public bucket
     new_report_s3_key = get_s3_key(report_date)
     upload_workbook(workbook=wb, bucket=PRIVATE_S3_BUCKET_NAME, key= new_report_s3_key)
-c
 
 # Virginia/DC/Maryland
 # Virginia (case and death data from VDH.  Hospitalization data from Virginia Health and Hospital Association website/dashboard).
