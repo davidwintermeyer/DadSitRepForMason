@@ -33,8 +33,12 @@ def email_template_generator_handler(event, context):
     wb = load_workbook(file)
 
     # generate the email format and share it with dad as an
-    individual_record = event["Records"][0]["eventTime"]
-    report_date_time = get_report_date_time(individual_record)
+    individual_record_time_str_unformatted = event["Records"][0]["eventTime"]
+    # [ERROR] ValueError: time data '2021-03-17T04:55:56.283Z' does not match format '%Y-%m-%dT%H:%M:%SZ'
+    # we want to delete those milliseconds
+    split_string = individual_record_time_str_unformatted.split(".", 1)
+    individual_record_time_str_formatted = split_string[0] + 'Z'
+    report_date_time = get_report_date_time(individual_record_time_str_formatted)
     report_date = report_date_time.date()
 
     # Write the report to the non-public bucket
