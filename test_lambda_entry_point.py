@@ -44,4 +44,4 @@ report_date = datetime.now(tz).date()
 # report_date = get_days_ago(report_date, 7)
 
 test_scheduled_event_json = generate_test_event_json(report_date)
-lambda_handler(test_scheduled_event_json, None)
+report_generating_lambda_handler(test_scheduled_event_json, None)
