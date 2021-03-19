@@ -8,6 +8,21 @@ from util.lambda_util import get_report_date_time
 from util.ses_util import send_report_as_attachment
 from util.date_util import get_days_ago
 
+
+# The email body for recipients with non-HTML email clients.
+BODY_TEXT = "Hello,\r\nPlease see the attached sit rep file"
+
+# The HTML body of the email.
+BODY_HTML = """\
+<html>
+<head></head>
+<body>
+<h1>Hello!</h1>
+<p>Please see the attached sitrep file.</p>
+</body>
+</html>
+"""
+
 def report_generating_lambda_handler(event, context):
     print("lambda_handler invoked with event: " + json.dumps(event))
     date_time_str_utc = event['time']

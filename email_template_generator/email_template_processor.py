@@ -3,7 +3,6 @@
 from constants import sitrep_column_constants
 from constants.sitrep_column_constants import column_title_to_letter_dicts
 
-
 def get_row_number_of_report_date(sheet, report_date):
     # Skip header
     row_number = 2
@@ -90,8 +89,12 @@ def get_percent_string_value(float_value):
     float_value = float_value * 100
     return str(float_value) + '%'
 
-def process_email_template(sheet, report_date):
+
+def get_email_text(sheet, report_date):
     row_number = get_row_number_of_report_date(sheet, report_date)
 
     virginia_text = get_virginia_text(sheet, row_number)
     print(virginia_text)
+
+    text = virginia_text
+    return text

@@ -23,19 +23,5 @@ def get_subject(report_date: date) -> str:
 
     return "Mason Covid Sitrep Report Date: " + date_str
 
-# The email body for recipients with non-HTML email clients.
-BODY_TEXT = "Hello,\r\nPlease see the attached sit rep file"
-
-# The HTML body of the email.
-BODY_HTML = """\
-<html>
-<head></head>
-<body>
-<h1>Hello!</h1>
-<p>Please see the attached sitrep file.</p>
-</body>
-</html>
-"""
-
 # The character encoding for the email.
 CHARSET = "utf-8"

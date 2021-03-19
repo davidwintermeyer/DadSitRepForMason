@@ -3,10 +3,12 @@ import json
 ## email_template_generator_handler invoked with event:
 from openpyxl import load_workbook
 
-from constants.file_constants import get_s3_key, PRIVATE_S3_BUCKET_NAME
-from email_template_generator.email_template_generator import process_email_template
+from constants.email_constants import EMAIL_RECIPIENTS
+from constants.file_constants import get_s3_key, PRIVATE_S3_BUCKET_NAME, get_file_name
+from email_template_generator.email_template_processor import get_email_text
 from util.lambda_util import get_report_date_time
 from util.s3_util import download_file, upload_workbook
+from util.ses_util import send_report_as_attachment
 
 
 def get_bucket_and_key_from_event(event: dict) -> []:
@@ -27,7 +29,7 @@ def get_report_date_from_s3_event(event):
     return report_date_time.date()
 
 
-def get_workbook_formula_and_data_only_given_s3_event(event):
+def get_workbook_file_only_given_s3_event(event):
     bucket_and_key = get_bucket_and_key_from_event(event)
     source_bucket = bucket_and_key[0]
     source_key = bucket_and_key[1]
@@ -36,11 +38,10 @@ def get_workbook_formula_and_data_only_given_s3_event(event):
     print("downloading file from bucket: " + source_bucket + " with key: " + source_key)
     # https://stackoverflow.com/questions/17195569/using-a-variable-in-a-try-catch-finally-statement-without-declaring-it-outside
     try:
-        file = download_file(bucket=source_bucket, key=source_key)
+        return download_file(bucket=source_bucket, key=source_key)
     except Exception as exc:
         raise RuntimeError('Failed to file from bucket: ' + source_bucket + ' with key: ' + source_key) from exc
-    ## Return workbook in two forms, one as the true file, and the other as data only
-    return [load_workbook(file), load_workbook(file, data_only=True)]
+
 
 def email_template_generator_handler(event, context):
     print("email_template_generator_handler invoked with event: " + json.dumps(event))
@@ -48,8 +49,8 @@ def email_template_generator_handler(event, context):
     report_date = get_report_date_from_s3_event(event)
     new_report_s3_key = get_s3_key(report_date)
 
-    workbooks = get_workbook_formula_and_data_only_given_s3_event(event)
-    workbook_to_upload_to_s3 = workbooks[0]
+    file = get_workbook_file_only_given_s3_event(event)
+    workbook_to_upload_to_s3 = load_workbook(file)
 
     try:
         # Write the report to the non-public bucket
@@ -60,14 +61,37 @@ def email_template_generator_handler(event, context):
         raise RuntimeError(error_message) from exc
 
 
-    data_only_workbook = workbooks[1]
+    data_only_workbook = load_workbook(file, data_only=True)
     sheet = data_only_workbook.active
 
     try:
-        print("Processing email template for report with report_date: " + report_date)
-        process_email_template(sheet, report_date)
+        print("Processing email template for report with report_date: " + str(report_date))
+
+        text = get_email_text(sheet, report_date)
+        # The HTML body of the email.
+        body_html = """\
+        <html>
+        <head></head>
+        <body>
+        <h1>Please see the following auto-generated email template</h1>
+        <p>
+        """
+        body_html += text
+        body_html += """
+        </p>
+        </body>
+        </html>
+        """
+
+        report_local_path = '/tmp/' + get_file_name(report_date)
+        print("saving file locally to path: " + report_local_path)
+        workbook_to_upload_to_s3.save(filename=report_local_path)
+
+        email_recipients = EMAIL_RECIPIENTS
+        send_report_as_attachment(report_date=report_date, report_local_path=report_local_path, email_recipients=email_recipients, body_text=text, body_html=body_html)
+
     except Exception as exc:
-        error_message = "Processing email template for report with report_datet: " + report_date
+        error_message = "Processing email template for report with report_date: " + str(report_date)
         raise RuntimeError(error_message) from exc
 
 

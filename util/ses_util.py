@@ -9,9 +9,9 @@ from email.mime.application import MIMEApplication
 
 from typing import List
 
-from constants.email_constants import AWS_REGION, SENDER, get_subject, RECIPIENT, BODY_TEXT, CHARSET, BODY_HTML
+from constants.email_constants import AWS_REGION, SENDER, get_subject, RECIPIENT, CHARSET
 
-def send_report_as_attachment(report_date: date, report_local_path: str, email_recipients: List[str]):
+def send_report_as_attachment(report_date: date, report_local_path: str, email_recipients: List[str], body_text, body_html):
     # Create a new SES resource and specify a region.
     client = boto3.client('ses', region_name=AWS_REGION)
 
@@ -27,8 +27,8 @@ def send_report_as_attachment(report_date: date, report_local_path: str, email_r
 
     # Encode the text and HTML content and set the character encoding. This step is
     # necessary if you're sending a message with characters outside the ASCII range.
-    textpart = MIMEText(BODY_TEXT.encode(CHARSET), 'plain', CHARSET)
-    htmlpart = MIMEText(BODY_HTML.encode(CHARSET), 'html', CHARSET)
+    textpart = MIMEText(body_text.encode(CHARSET), 'plain', CHARSET)
+    htmlpart = MIMEText(body_html.encode(CHARSET), 'html', CHARSET)
 
     # Add the text and HTML parts to the child container.
     msg_body.attach(textpart)

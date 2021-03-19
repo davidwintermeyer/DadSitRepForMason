@@ -4,7 +4,7 @@ from datetime import date, datetime
 from pytz import timezone
 import json
 
-from email_template_generator.email_template_generator_entry_point import email_template_generator_handler
+from email_template_generator_entry_point import email_template_generator_handler
 
 os.environ["DEBUSSY"] = "1"
 os.environ["DEBUSSY"] = "1"
