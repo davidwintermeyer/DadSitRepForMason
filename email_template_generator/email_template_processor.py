@@ -11,7 +11,7 @@ def get_global_text(sheet, row_number):
     deaths_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GLOBAL_DEATHS_COLUMN] + str(row_number)
     deaths_cell = sheet[deaths_cell_str]
     deaths_cell_formatted = format_integer(deaths_cell.value)
-    text = 'Global" {} cases/{} deaths'.format(cases_cell_formatted, deaths_cell_formatted)
+    text = 'Global: {} cases/{} deaths'.format(cases_cell_formatted, deaths_cell_formatted)
     return text
 
 # US:   29,154,659 cases/529,263 deaths
@@ -22,7 +22,7 @@ def get_us_text(sheet, row_number):
     deaths_cell_str = column_title_to_letter_dicts[sitrep_column_constants.US_DEATHS_COLUMN] + str(row_number)
     deaths_cell = sheet[deaths_cell_str]
     deaths_cell_formatted = format_integer(deaths_cell.value)
-    text = 'US:" {} cases/{} deaths'.format(cases_cell_formatted, deaths_cell_formatted)
+    text = 'US: {} cases/{} deaths'.format(cases_cell_formatted, deaths_cell_formatted)
     return text
 
 
