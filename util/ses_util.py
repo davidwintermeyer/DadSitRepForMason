@@ -50,7 +50,6 @@ def send_report_as_attachment(report_date: date, report_local_path: str, email_r
     try:
         print("sending email message with sender: " + SENDER)
         print("sending email message with Destinations: " + ' '.join(map(str, email_recipients)))
-        print("sending email message with msg: " + str(msg))
         #Provide the contents of the email.
         response = client.send_raw_email(
             Source=SENDER,

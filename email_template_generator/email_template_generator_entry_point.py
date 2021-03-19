@@ -59,6 +59,9 @@ def get_text_as_html(text_paragraphs_in_list):
         text += '<p>'
         lines = paragraph.splitlines()
         is_first = True
+        # for the one liners, don't make them bold.
+        if len(lines) == 1:
+            is_first = False
         for line in lines:
             if is_first:
                 text += '<b>'
@@ -117,64 +120,9 @@ def email_template_generator_handler(event, context):
         print("saving file locally to path: " + report_local_path)
         workbook_to_upload_to_s3.save(filename=report_local_path)
 
-        email_recipients = EMAIL_RECIPIENTS
+        email_recipients = ['dwint94@gmail.com']
         send_report_as_attachment(report_date=report_date, report_local_path=report_local_path, email_recipients=email_recipients, body_text=text_str, body_html=body_html)
 
     except Exception as exc:
         error_message = "Processing email template for report with report_date: " + str(report_date)
         raise RuntimeError(error_message) from exc
-
-
-
-
-
-
-# Virginia/DC/Maryland
-# Virginia (case and death data from VDH.  Hospitalization data from Virginia Health and Hospital Association website/dashboard).
-# Total cases: 590,625  (up 1,250 since previous day)
-# 5.5% positive test rate (7 day PCR positive rate; down 0.2% since previous day)
-# Deaths: 9,902 (up 53 since previous day)
-# Hospitalizations:  Present 1,129 (down 7 since previous day) Discharges: Cumulative 48,804 (up 98 since previous day)
-#
-# Fairfax County
-# 69,070 cases (up 138 since previous day)
-# 5.5% positive test rate (7 day PCR positive test rate; down 0.1% since previous day)
-# 3,630 cumulative number of hospitalizations (up 2 since previous day)
-# 1,052 deaths (no change since previous day)
-#
-# Arlington
-# 13,526 cases (up 25 since previous day)
-# 4.2% positive test rate (7 day PCR positive test rate; down 0.1% since previous day)
-# 781 cumulative number of hospitalizations (up 3  since previous day)
-# 241 deaths (up 1 since previous day)
-#
-# Prince William
-# 45,363 cases (up 54 since previous day)
-# 6.5% positive test rate (7 day PCR positive test rate; down 0.3% since previous day)
-# 1,687 cumulative number of hospitalizations (up 16 since previous day)
-# 513 deaths (no change since previous day)
-#
-# George Mason
-# New cases since 1/25/2021.
-# 169 student cases (up 1 since previous day)
-# 91 residential student cases (no change since previous day)
-# 78 non-residential student cases (up 1 since previous day)
-# 36 employee cases (up 1 since previous day)
-# 2 contractor cases (no change since previous day)
-#
-# 33 active total cases (down 5 since previous day)
-# 13 active residential student cases (down 1 since previous day)
-# 15 active non-residential student cases (down 1 since previous day)
-# 5 active employee case (down 3 since previous day)
-# 0 active contractor cases (no change since previous day)
-#
-# Residential Case Data are from 3/7
-# Residential students presently in Isolation or Quarantine on and off campus):
-# 3 in isolation on campus (no change since previous day)
-# 4 in isolation off campus (down 1 since previous day)
-# 4 in quarantine on campus (up 1 since previous day)
-# 5 in quarantine off campus (no change since previous day)
-#
-# Global:  118,031,918 cases/2,619,866 deaths
-#
-# US:   29,154,659 cases/529,263 deaths
