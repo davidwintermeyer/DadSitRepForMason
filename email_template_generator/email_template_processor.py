@@ -25,7 +25,7 @@ from constants.sitrep_column_constants import column_title_to_letter_dicts
 # 5 in quarantine off campus (no change since previous day)
 def get_george_mason_text(sheet, row_number):
     text = 'George Mason\n'
-    text += 'New cases since 1/25/2021.'
+    text += 'New cases since 1/25/2021.\n'
 
     total_student_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_TOTAL_STUDENT_CASES_COLUMN] + str(row_number)
     total_student_cases_cell = sheet[total_student_cases_cell_str]
@@ -71,6 +71,9 @@ def get_george_mason_text(sheet, row_number):
     contractor_cases_change_since_previous_day_cell_formatted = format_integer(contractor_cases_change_since_previous_day_cell.value)
     contractor_cases_change_since_previous_day_cell_formatted = format_up_down(contractor_cases_change_since_previous_day_cell_formatted)
     text += '{} contractor cases ({} since previous day)\n'.format(contractor_cases_cell_formatted, contractor_cases_change_since_previous_day_cell_formatted)
+
+    text += '\n'
+
 
     return text
 
