@@ -74,6 +74,77 @@ def get_george_mason_text(sheet, row_number):
 
     text += '\n'
 
+    ### Active cases, I'm not updating the variable names, only the columns
+
+    active_total_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.ACTIVE_TOTAL_CASES_COLUMN] + str(row_number)
+    active_total_cases_cell = sheet[active_total_cases_cell_str]
+    active_total_cases_cell_formatted = format_integer(active_total_cases_cell.value)
+    active_total_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.ACTIVE_TOTAL_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(row_number)
+    active_total_cases_change_since_previous_day_cell = sheet[active_total_cases_change_since_previous_day_cell_str]
+    active_total_cases_change_since_previous_day_cell_formatted = format_integer(active_total_cases_change_since_previous_day_cell.value)
+    active_total_cases_change_since_previous_day_cell_formatted = format_up_down(active_total_cases_change_since_previous_day_cell_formatted)
+    text += '{} active total cases ({} since previous day)\n'.format(active_total_cases_cell_formatted, active_total_cases_change_since_previous_day_cell_formatted)
+
+    res_student_cases_cell_str = column_title_to_letter_dicts[
+                                     sitrep_column_constants.ACTIVE_RES_STUDENT_CASES_COLUMN] + str(row_number)
+    res_student_cases_cell = sheet[res_student_cases_cell_str]
+    res_student_cases_cell_formatted = format_integer(res_student_cases_cell.value)
+    res_student_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[
+                                                               sitrep_column_constants.ACTIVE_RES_STUDENT_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(
+        row_number)
+    res_student_cases_change_since_previous_day_cell = sheet[res_student_cases_change_since_previous_day_cell_str]
+    res_student_cases_change_since_previous_day_cell_formatted = format_integer(
+        res_student_cases_change_since_previous_day_cell.value)
+    res_student_cases_change_since_previous_day_cell_formatted = format_up_down(
+        res_student_cases_change_since_previous_day_cell_formatted)
+    text += '{} active residential student cases ({} since previous day)\n'.format(res_student_cases_cell_formatted,
+                                                                            res_student_cases_change_since_previous_day_cell_formatted)
+
+    non_res_student_cases_cell_str = column_title_to_letter_dicts[
+                                         sitrep_column_constants.ACTIVE_NON_RES_STUDENT_CASES_COLUMN] + str(row_number)
+    non_res_student_cases_cell = sheet[non_res_student_cases_cell_str]
+    non_res_student_cases_cell_formatted = format_integer(non_res_student_cases_cell.value)
+    non_res_student_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[
+                                                                   sitrep_column_constants.ACTIVE_NON_RES_STUDENT_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(
+        row_number)
+    non_res_student_cases_change_since_previous_day_cell = sheet[
+        non_res_student_cases_change_since_previous_day_cell_str]
+    non_res_student_cases_change_since_previous_day_cell_formatted = format_integer(
+        non_res_student_cases_change_since_previous_day_cell.value)
+    non_res_student_cases_change_since_previous_day_cell_formatted = format_up_down(
+        non_res_student_cases_change_since_previous_day_cell_formatted)
+    text += '{} active non-residential student cases ({} since previous day)\n'.format(non_res_student_cases_cell_formatted,
+                                                                                non_res_student_cases_change_since_previous_day_cell_formatted)
+
+    employee_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.ACTIVE_EMPLOYEE_CASES_COLUMN] + str(
+        row_number)
+    employee_cases_cell = sheet[employee_cases_cell_str]
+    employee_cases_cell_formatted = format_integer(employee_cases_cell.value)
+    employee_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[
+                                                            sitrep_column_constants.ACTIVE_EMPLOYEE_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(
+        row_number)
+    employee_cases_change_since_previous_day_cell = sheet[employee_cases_change_since_previous_day_cell_str]
+    employee_cases_change_since_previous_day_cell_formatted = format_integer(
+        employee_cases_change_since_previous_day_cell.value)
+    employee_cases_change_since_previous_day_cell_formatted = format_up_down(
+        employee_cases_change_since_previous_day_cell_formatted)
+    text += '{} active employee cases ({} since previous day)\n'.format(employee_cases_cell_formatted,
+                                                                 employee_cases_change_since_previous_day_cell_formatted)
+
+    contractor_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.ACTIVE_CONTRACTOR_CASES_COLUMN] + str(
+        row_number)
+    contractor_cases_cell = sheet[contractor_cases_cell_str]
+    contractor_cases_cell_formatted = format_integer(contractor_cases_cell.value)
+    contractor_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[
+                                                              sitrep_column_constants.ACTIVE_CONTRACTOR_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(
+        row_number)
+    contractor_cases_change_since_previous_day_cell = sheet[contractor_cases_change_since_previous_day_cell_str]
+    contractor_cases_change_since_previous_day_cell_formatted = format_integer(
+        contractor_cases_change_since_previous_day_cell.value)
+    contractor_cases_change_since_previous_day_cell_formatted = format_up_down(
+        contractor_cases_change_since_previous_day_cell_formatted)
+    text += '{} active contractor cases ({} since previous day)\n'.format(contractor_cases_cell_formatted,
+                                                                   contractor_cases_change_since_previous_day_cell_formatted)
 
     return text
 
