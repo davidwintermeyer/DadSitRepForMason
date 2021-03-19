@@ -54,6 +54,24 @@ def get_george_mason_text(sheet, row_number):
     non_res_student_cases_change_since_previous_day_cell_formatted = format_up_down(non_res_student_cases_change_since_previous_day_cell_formatted)
     text += '{} non-residential student cases ({} since previous day)\n'.format(non_res_student_cases_cell_formatted, non_res_student_cases_change_since_previous_day_cell_formatted)
 
+    employee_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_EMPLOYEE_CASES_COLUMN] + str(row_number)
+    employee_cases_cell = sheet[employee_cases_cell_str]
+    employee_cases_cell_formatted = format_integer(employee_cases_cell.value)
+    employee_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_EMPLOYEE_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(row_number)
+    employee_cases_change_since_previous_day_cell = sheet[employee_cases_change_since_previous_day_cell_str]
+    employee_cases_change_since_previous_day_cell_formatted = format_integer(employee_cases_change_since_previous_day_cell.value)
+    employee_cases_change_since_previous_day_cell_formatted = format_up_down(employee_cases_change_since_previous_day_cell_formatted)
+    text += '{} employee cases ({} since previous day)\n'.format(employee_cases_cell_formatted, employee_cases_change_since_previous_day_cell_formatted)
+
+    contractor_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_CONTRACTOR_CASES_COLUMN] + str(row_number)
+    contractor_cases_cell = sheet[contractor_cases_cell_str]
+    contractor_cases_cell_formatted = format_integer(contractor_cases_cell.value)
+    contractor_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_CONTRACTOR_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(row_number)
+    contractor_cases_change_since_previous_day_cell = sheet[contractor_cases_change_since_previous_day_cell_str]
+    contractor_cases_change_since_previous_day_cell_formatted = format_integer(contractor_cases_change_since_previous_day_cell.value)
+    contractor_cases_change_since_previous_day_cell_formatted = format_up_down(contractor_cases_change_since_previous_day_cell_formatted)
+    text += '{} contractor cases ({} since previous day)\n'.format(contractor_cases_cell_formatted, contractor_cases_change_since_previous_day_cell_formatted)
+
     return text
 
 # Global:  118,031,918 cases/2,619,866 deaths
