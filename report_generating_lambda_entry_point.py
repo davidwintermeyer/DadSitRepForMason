@@ -1,5 +1,6 @@
 import json
 import traceback
+from datetime import date
 
 from constants.email_constants import EMAIL_RECIPIENTS
 from constants.file_constants import PRIVATE_S3_BUCKET_NAME, get_s3_key
@@ -23,6 +24,11 @@ BODY_HTML = """\
 </html>
 """
 
+def get_subject(report_date: date) -> str:
+    date_str = report_date.strftime('%m/%d/%Y')
+
+    return "Mason Covid Sitrep Report Date: " + date_str
+
 def report_generating_lambda_handler(event, context):
     print("lambda_handler invoked with event: " + json.dumps(event))
     date_time_str_utc = event['time']
@@ -36,7 +42,7 @@ def report_generating_lambda_handler(event, context):
     new_report_s3_key = get_s3_key(report_date)
     try:
         report_local_path = generate_report_for_day_s3(s3bucket=PRIVATE_S3_BUCKET_NAME, previous_report_s3_key=previous_report_s3_key, new_report_s3_key=new_report_s3_key, report_date=report_date, report_time=report_time)
-        send_report_as_attachment(report_date=report_date, report_local_path=report_local_path, email_recipients=EMAIL_RECIPIENTS)
+        send_report_as_attachment(report_local_path=report_local_path, subject=get_subject(report_date), email_recipients=EMAIL_RECIPIENTS, body_text=BODY_TEXT, body_html=BODY_HTML)
     except Exception as exc:
         traceback.print_exc()
         raise RuntimeError('Failed to process SitRep report for date: ' + new_report_s3_key) from exc

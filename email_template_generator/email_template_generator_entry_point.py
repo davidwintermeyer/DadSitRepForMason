@@ -80,6 +80,12 @@ def get_text_as_html(text_paragraphs_in_list):
             text += '</p>'
     return text
 
+
+def get_subject(report_date):
+    date_str = report_date.strftime('%m/%d/%Y')
+
+    return "Mason Covid Sitrep Report Email Text: " + date_str
+
 def email_template_generator_handler(event, context):
     print("email_template_generator_handler invoked with event: " + json.dumps(event))
 
@@ -127,7 +133,7 @@ def email_template_generator_handler(event, context):
         workbook_to_upload_to_s3.save(filename=report_local_path)
 
         email_recipients = EMAIL_RECIPIENTS
-        send_report_as_attachment(report_date=report_date, report_local_path=report_local_path, email_recipients=email_recipients, body_text=text_str, body_html=body_html)
+        send_report_as_attachment(report_local_path=report_local_path, email_recipients=email_recipients, subject=get_subject(report_date), body_text=text_str, body_html=body_html)
 
     except Exception as exc:
         error_message = "Processing email template for report with report_date: " + str(report_date)
