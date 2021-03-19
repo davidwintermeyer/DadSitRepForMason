@@ -149,7 +149,7 @@ def get_george_mason_text(sheet, row_number):
 
     ### Being lazy and not changing the variable names, just the column names
     text += '\n'
-    text += 'Residential students presently in Isolation or Quarantine on and off campus):'
+    text += 'Residential students presently in Isolation or Quarantine on and off campus):\n'
     active_total_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.RESIDENTIAL_ISOLATION_ON_CAMPUS] + str(row_number)
     active_total_cases_cell = sheet[active_total_cases_cell_str]
     active_total_cases_cell_formatted = format_integer(active_total_cases_cell.value)
