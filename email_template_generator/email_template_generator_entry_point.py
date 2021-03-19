@@ -28,9 +28,9 @@ def get_report_date_from_s3_event(event):
     split_string = individual_record_time_str_unformatted.split(".", 1)
     individual_record_time_str_formatted = split_string[0] + 'Z'
     report_date_time = get_report_date_time(individual_record_time_str_formatted)
-    # If its before 3am, treat is as previous day
+    # If its before 5pm, treat is as previous day
     days_ago = 0
-    if report_date_time.time() < datetime.time(3, 0):
+    if report_date_time.time() < datetime.time(17, 0):
         days_ago = 1
     return get_days_ago(report_date_time.date(), days_ago)
 
