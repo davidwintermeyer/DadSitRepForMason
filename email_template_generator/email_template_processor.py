@@ -146,6 +146,45 @@ def get_george_mason_text(sheet, row_number):
     text += '{} active contractor cases ({} since previous day)\n'.format(contractor_cases_cell_formatted,
                                                                    contractor_cases_change_since_previous_day_cell_formatted)
 
+
+    ### Being lazy and not changing the variable names, just the column names
+    text += '\n'
+    text += 'Residential students presently in Isolation or Quarantine on and off campus):'
+    active_total_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.RESIDENTIAL_ISOLATION_ON_CAMPUS] + str(row_number)
+    active_total_cases_cell = sheet[active_total_cases_cell_str]
+    active_total_cases_cell_formatted = format_integer(active_total_cases_cell.value)
+    active_total_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.RESIDENTIAL_ISOLATION_ON_CAMPUS_DELTA] + str(row_number)
+    active_total_cases_change_since_previous_day_cell = sheet[active_total_cases_change_since_previous_day_cell_str]
+    active_total_cases_change_since_previous_day_cell_formatted = format_integer(active_total_cases_change_since_previous_day_cell.value)
+    active_total_cases_change_since_previous_day_cell_formatted = format_up_down(active_total_cases_change_since_previous_day_cell_formatted)
+    text += '{} in isolation on campus ({} since previous day)\n'.format(active_total_cases_cell_formatted, active_total_cases_change_since_previous_day_cell_formatted)
+
+    active_total_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.RESIDENTIAL_ISOLATION_OFF_CAMPUS] + str(row_number)
+    active_total_cases_cell = sheet[active_total_cases_cell_str]
+    active_total_cases_cell_formatted = format_integer(active_total_cases_cell.value)
+    active_total_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.RESIDENTIAL_ISOLATION_OFF_CAMPUS_DELTA] + str(row_number)
+    active_total_cases_change_since_previous_day_cell = sheet[active_total_cases_change_since_previous_day_cell_str]
+    active_total_cases_change_since_previous_day_cell_formatted = format_integer(active_total_cases_change_since_previous_day_cell.value)
+    active_total_cases_change_since_previous_day_cell_formatted = format_up_down(active_total_cases_change_since_previous_day_cell_formatted)
+    text += '{} in isolation off campus ({} since previous day)\n'.format(active_total_cases_cell_formatted, active_total_cases_change_since_previous_day_cell_formatted)
+
+    active_total_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.RESIDENTIAL_QUARARNTINE_ON_CAMPUS] + str(row_number)
+    active_total_cases_cell = sheet[active_total_cases_cell_str]
+    active_total_cases_cell_formatted = format_integer(active_total_cases_cell.value)
+    active_total_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.RESIDENTIAL_QUARARNTINE_ON_CAMPUS_DELTA] + str(row_number)
+    active_total_cases_change_since_previous_day_cell = sheet[active_total_cases_change_since_previous_day_cell_str]
+    active_total_cases_change_since_previous_day_cell_formatted = format_integer(active_total_cases_change_since_previous_day_cell.value)
+    active_total_cases_change_since_previous_day_cell_formatted = format_up_down(active_total_cases_change_since_previous_day_cell_formatted)
+    text += '{} in quarantine on campus ({} since previous day)\n'.format(active_total_cases_cell_formatted, active_total_cases_change_since_previous_day_cell_formatted)
+
+    active_total_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.RESIDENTIAL_QUARARNTINE_OFF_CAMPUS] + str(row_number)
+    active_total_cases_cell = sheet[active_total_cases_cell_str]
+    active_total_cases_cell_formatted = format_integer(active_total_cases_cell.value)
+    active_total_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.RESIDENTIAL_QUARARNTINE_OFF_CAMPUS_DELTA] + str(row_number)
+    active_total_cases_change_since_previous_day_cell = sheet[active_total_cases_change_since_previous_day_cell_str]
+    active_total_cases_change_since_previous_day_cell_formatted = format_integer(active_total_cases_change_since_previous_day_cell.value)
+    active_total_cases_change_since_previous_day_cell_formatted = format_up_down(active_total_cases_change_since_previous_day_cell_formatted)
+    text += '{} in quarantine off campus ({} since previous day)\n'.format(active_total_cases_cell_formatted, active_total_cases_change_since_previous_day_cell_formatted)
     return text
 
 # Global:  118,031,918 cases/2,619,866 deaths

@@ -120,7 +120,7 @@ def email_template_generator_handler(event, context):
         print("saving file locally to path: " + report_local_path)
         workbook_to_upload_to_s3.save(filename=report_local_path)
 
-        email_recipients = ['dwint94@gmail.com']
+        email_recipients = EMAIL_RECIPIENTS
         send_report_as_attachment(report_date=report_date, report_local_path=report_local_path, email_recipients=email_recipients, body_text=text_str, body_html=body_html)
 
     except Exception as exc:
