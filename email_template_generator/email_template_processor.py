@@ -3,6 +3,59 @@
 from constants import sitrep_column_constants
 from constants.sitrep_column_constants import column_title_to_letter_dicts
 
+# George Mason
+# New cases since 1/25/2021.
+# 169 student cases (up 1 since previous day)
+# 91 residential student cases (no change since previous day)
+# 78 non-residential student cases (up 1 since previous day)
+# 36 employee cases (up 1 since previous day)
+# 2 contractor cases (no change since previous day)
+#
+# 33 active total cases (down 5 since previous day)
+# 13 active residential student cases (down 1 since previous day)
+# 15 active non-residential student cases (down 1 since previous day)
+# 5 active employee case (down 3 since previous day)
+# 0 active contractor cases (no change since previous day)
+#
+# Residential Case Data are from 3/7
+# Residential students presently in Isolation or Quarantine on and off campus):
+# 3 in isolation on campus (no change since previous day)
+# 4 in isolation off campus (down 1 since previous day)
+# 4 in quarantine on campus (up 1 since previous day)
+# 5 in quarantine off campus (no change since previous day)
+def get_george_mason_text(sheet, row_number):
+    text = 'George Mason\n'
+    text += 'New cases since 1/25/2021.'
+
+    total_student_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_TOTAL_STUDENT_CASES_COLUMN] + str(row_number)
+    total_student_cases_cell = sheet[total_student_cases_cell_str]
+    total_student_cases_cell_formatted = format_integer(total_student_cases_cell.value)
+    total_student_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_TOTAL_STUDENT_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(row_number)
+    total_student_cases_change_since_previous_day_cell = sheet[total_student_cases_change_since_previous_day_cell_str]
+    total_student_cases_change_since_previous_day_cell_formatted = format_integer(total_student_cases_change_since_previous_day_cell.value)
+    total_student_cases_change_since_previous_day_cell_formatted = format_up_down(total_student_cases_change_since_previous_day_cell_formatted)
+    text += '{} student cases ({} since previous day)\n'.format(total_student_cases_cell_formatted, total_student_cases_change_since_previous_day_cell_formatted)
+
+    res_student_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_RES_STUDENT_CASES_COLUMN] + str(row_number)
+    res_student_cases_cell = sheet[res_student_cases_cell_str]
+    res_student_cases_cell_formatted = format_integer(res_student_cases_cell.value)
+    res_student_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_RES_STUDENT_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(row_number)
+    res_student_cases_change_since_previous_day_cell = sheet[res_student_cases_change_since_previous_day_cell_str]
+    res_student_cases_change_since_previous_day_cell_formatted = format_integer(res_student_cases_change_since_previous_day_cell.value)
+    res_student_cases_change_since_previous_day_cell_formatted = format_up_down(res_student_cases_change_since_previous_day_cell_formatted)
+    text += '{} residential student cases ({} since previous day)\n'.format(res_student_cases_cell_formatted, res_student_cases_change_since_previous_day_cell_formatted)
+
+    non_res_student_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_NON_RES_STUDENT_CASES_COLUMN] + str(row_number)
+    non_res_student_cases_cell = sheet[non_res_student_cases_cell_str]
+    non_res_student_cases_cell_formatted = format_integer(non_res_student_cases_cell.value)
+    non_res_student_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_NON_RES_STUDENT_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(row_number)
+    non_res_student_cases_change_since_previous_day_cell = sheet[non_res_student_cases_change_since_previous_day_cell_str]
+    non_res_student_cases_change_since_previous_day_cell_formatted = format_integer(non_res_student_cases_change_since_previous_day_cell.value)
+    non_res_student_cases_change_since_previous_day_cell_formatted = format_up_down(non_res_student_cases_change_since_previous_day_cell_formatted)
+    text += '{} non-residential student cases ({} since previous day)\n'.format(non_res_student_cases_cell_formatted, non_res_student_cases_change_since_previous_day_cell_formatted)
+
+    return text
+
 # Global:  118,031,918 cases/2,619,866 deaths
 def get_global_text(sheet, row_number):
     cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GLOBAL_CASES_COLUMN] + str(row_number)
@@ -25,20 +78,6 @@ def get_us_text(sheet, row_number):
     text = 'US: {} cases/{} deaths'.format(cases_cell_formatted, deaths_cell_formatted)
     return text
 
-
-def get_row_number_of_report_date(sheet, report_date):
-    # Skip header
-    row_number = 2
-    # currently, row 160 is 3/14/2021
-    while row_number < 500:
-        cell_str = column_title_to_letter_dicts[sitrep_column_constants.DATE_COLUMN] + str(row_number)
-        cell = sheet[cell_str]
-        # cell.value is a datetime object, call date() in it
-        if cell.value.date() == report_date:
-            return row_number
-        row_number += 1
-    raise RuntimeError('Could not find row for reportdate: ' + report_date.__str__())
-
 def get_prince_william_county_text(sheet, row_number):
     text = 'Prince William County\n'
     cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.PW_CASES_COLUMN] + str(row_number)
@@ -47,8 +86,9 @@ def get_prince_william_county_text(sheet, row_number):
     cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.PW_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(row_number)
     cases_change_since_previous_day_cell = sheet[cases_change_since_previous_day_cell_str]
     cases_change_since_previous_day_cell_formatted = format_integer(cases_change_since_previous_day_cell.value)
+    cases_change_since_previous_day_cell_formatted = format_up_down(cases_change_since_previous_day_cell_formatted)
 
-    text += '{} cases (up {} since previous day)\n'.format(cases_cell_formatted, cases_change_since_previous_day_cell_formatted)
+    text += '{} cases ({} since previous day)\n'.format(cases_cell_formatted, cases_change_since_previous_day_cell_formatted)
 
     positive_test_rate_cell_str = column_title_to_letter_dicts[sitrep_column_constants.PW_POSITIVE_TEST_RATE_COLUMN] + str(row_number)
     positive_test_rate_cell = sheet[positive_test_rate_cell_str]
@@ -71,8 +111,9 @@ def get_arlington_county_text(sheet, row_number):
     cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.ARLINGTON_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(row_number)
     cases_change_since_previous_day_cell = sheet[cases_change_since_previous_day_cell_str]
     cases_change_since_previous_day_cell_formatted = format_integer(cases_change_since_previous_day_cell.value)
+    cases_change_since_previous_day_cell_formatted = format_up_down(cases_change_since_previous_day_cell_formatted)
 
-    text += '{} cases (up {} since previous day)\n'.format(cases_cell_formatted, cases_change_since_previous_day_cell_formatted)
+    text += '{} cases ({} since previous day)\n'.format(cases_cell_formatted, cases_change_since_previous_day_cell_formatted)
 
     positive_test_rate_cell_str = column_title_to_letter_dicts[sitrep_column_constants.ARLINGTON_POSITIVE_TEST_RATE_COLUMN] + str(row_number)
     positive_test_rate_cell = sheet[positive_test_rate_cell_str]
@@ -96,8 +137,9 @@ def get_fairfax_county_text(sheet, row_number):
     cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.FAIRFAX_CASES_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(row_number)
     cases_change_since_previous_day_cell = sheet[cases_change_since_previous_day_cell_str]
     cases_change_since_previous_day_cell_formatted = format_integer(cases_change_since_previous_day_cell.value)
+    cases_change_since_previous_day_cell_formatted = format_up_down(cases_change_since_previous_day_cell_formatted)
 
-    text += '{} cases (up {} since previous day)\n'.format(cases_cell_formatted, cases_change_since_previous_day_cell_formatted)
+    text += '{} cases ({} since previous day)\n'.format(cases_cell_formatted, cases_change_since_previous_day_cell_formatted)
 
     positive_test_rate_cell_str = column_title_to_letter_dicts[sitrep_column_constants.FAIRFAX_POSITIVE_TEST_RATE_COLUMN] + str(row_number)
     positive_test_rate_cell = sheet[positive_test_rate_cell_str]
@@ -128,8 +170,9 @@ def get_virginia_text(sheet, row_number):
     total_cases_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.VA_CASES_CHANGE_PREVIOUS_DAY_COLUMN] + str(row_number)
     total_cases_change_since_previous_day_cell = sheet[total_cases_change_since_previous_day_cell_str]
     total_cases_change_since_previous_day_cell_formatted = format_integer(total_cases_change_since_previous_day_cell.value)
+    total_cases_change_since_previous_day_cell_formatted = format_up_down(total_cases_change_since_previous_day_cell_formatted)
 
-    text += 'Total cases: {} (up {} since previous day)\n'.format(total_cases_cell_formatted, total_cases_change_since_previous_day_cell_formatted)
+    text += 'Total cases: {} ({} since previous day)\n'.format(total_cases_cell_formatted, total_cases_change_since_previous_day_cell_formatted)
 
     va_positive_test_rate_cell_str = column_title_to_letter_dicts[sitrep_column_constants.VA_POSITIVE_TEST_RATE_COLUMN] + str(row_number)
     va_positive_test_rate_cell = sheet[va_positive_test_rate_cell_str]
@@ -146,7 +189,9 @@ def get_virginia_text(sheet, row_number):
     va_deaths_cell_formatted = format_integer(va_deaths_cell.value)
     va_death_change_since_previous_day_cell_str = column_title_to_letter_dicts[sitrep_column_constants.VA_DEATHS_CHANGE_SINCE_PREVIOUS_DAY_COLUMN] + str(row_number)
     va_death_change_since_previous_day_cell = sheet[va_death_change_since_previous_day_cell_str]
-    text += 'Deaths: {} (up {} since previous day)\n'.format(va_deaths_cell_formatted, va_death_change_since_previous_day_cell.value)
+    va_deaths_change_since_previous_day_formatted = format_integer(va_death_change_since_previous_day_cell.value)
+    va_deaths_change_since_previous_day_formatted = format_up_down(va_deaths_change_since_previous_day_formatted)
+    text += 'Deaths: {} ({} since previous day)\n'.format(va_deaths_cell_formatted, va_deaths_change_since_previous_day_formatted)
 
     # # Hospitalizations:  Present 1,129 (down 7 since previous day) Discharges: Cumulative 48,804 (up 98 since previous day)
 
@@ -167,8 +212,14 @@ def get_virginia_text(sheet, row_number):
 def format_integer(value):
     return f'{value:,}'  # For Python ≥3.6
 
-
 def format_up_down(str):
+    try:
+        int(str)
+        if int(str) == 0:
+            return 'no change '
+    except ValueError:
+        'ignoring this'
+
     if '-' in str:
         str = str.replace('-', '')
         return 'down ' + str
@@ -181,6 +232,19 @@ def get_percent_string_value(float_value):
     return str(float_value) + '%'
 
 
+def get_row_number_of_report_date(sheet, report_date):
+    # Skip header
+    row_number = 2
+    # currently, row 160 is 3/14/2021
+    while row_number < 500:
+        cell_str = column_title_to_letter_dicts[sitrep_column_constants.DATE_COLUMN] + str(row_number)
+        cell = sheet[cell_str]
+        # cell.value is a datetime object, call date() in it
+        if cell.value.date() == report_date:
+            return row_number
+        row_number += 1
+    raise RuntimeError('Could not find row for reportdate: ' + report_date.__str__())
+
 def get_email_text_paragraphs_in_list(sheet, report_date):
     row_number = get_row_number_of_report_date(sheet, report_date)
 
@@ -188,10 +252,10 @@ def get_email_text_paragraphs_in_list(sheet, report_date):
     fairfax_county_text = get_fairfax_county_text(sheet, row_number)
     arlington_county_text = get_arlington_county_text(sheet, row_number)
     prince_william_county_text = get_prince_william_county_text(sheet, row_number)
-
+    george_mason_text = get_george_mason_text(sheet, row_number)
     global_text = get_global_text(sheet, row_number)
     us_text = get_us_text(sheet, row_number)
-    return [virginia_text, fairfax_county_text, arlington_county_text, prince_william_county_text, global_text, us_text]
+    return [virginia_text, fairfax_county_text, arlington_county_text, prince_william_county_text, george_mason_text, global_text, us_text]
 
 # Virginia/DC/Maryland
 # Virginia (case and death data from VDH.  Hospitalization data from Virginia Health and Hospital Association website/dashboard).
