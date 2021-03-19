@@ -90,11 +90,9 @@ def get_percent_string_value(float_value):
     return str(float_value) + '%'
 
 
-def get_email_text(sheet, report_date):
+def get_email_text_paragraphs_in_list(sheet, report_date):
     row_number = get_row_number_of_report_date(sheet, report_date)
 
     virginia_text = get_virginia_text(sheet, row_number)
-    print(virginia_text)
 
-    text = virginia_text
-    return text
+    return [virginia_text]

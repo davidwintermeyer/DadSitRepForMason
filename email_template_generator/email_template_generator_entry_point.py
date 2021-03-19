@@ -5,7 +5,7 @@ from openpyxl import load_workbook
 
 from constants.email_constants import EMAIL_RECIPIENTS
 from constants.file_constants import get_s3_key, PRIVATE_S3_BUCKET_NAME, get_file_name
-from email_template_generator.email_template_processor import get_email_text
+from email_template_generator.email_template_processor import get_email_text_paragraphs_in_list
 from util.lambda_util import get_report_date_time
 from util.s3_util import download_file, upload_workbook
 from util.ses_util import send_report_as_attachment
@@ -43,6 +43,34 @@ def get_workbook_file_only_given_s3_event(event):
         raise RuntimeError('Failed to file from bucket: ' + source_bucket + ' with key: ' + source_key) from exc
 
 
+def get_text_as_string(text_paragraphs_in_list):
+    text = ''
+    for paragraph in text_paragraphs_in_list:
+        text += paragraph
+        text += '\n'
+    return text
+
+
+def get_text_as_html(text_paragraphs_in_list):
+    # Wrap each paragraph in its own <p> </p>
+    # First sentence
+    text = ''
+    for paragraph in text_paragraphs_in_list:
+        text += '<p>'
+        lines = paragraph.splitlines()
+        is_first = True
+        for line in lines:
+            if is_first:
+                text += '<b>'
+                text += line
+                text += '</b>'
+                is_first = False
+            else:
+                text += line
+            text += '<br>'
+            text += '</p>'
+    return text
+
 def email_template_generator_handler(event, context):
     print("email_template_generator_handler invoked with event: " + json.dumps(event))
 
@@ -67,18 +95,20 @@ def email_template_generator_handler(event, context):
     try:
         print("Processing email template for report with report_date: " + str(report_date))
 
-        text = get_email_text(sheet, report_date)
+        text_paragraphs_in_list = get_email_text_paragraphs_in_list(sheet, report_date)
+
+        text_str = get_text_as_string(text_paragraphs_in_list)
+
+        text_as_html = get_text_as_html(text_paragraphs_in_list)
         # The HTML body of the email.
         body_html = """\
         <html>
         <head></head>
         <body>
         <h1>Please see the following auto-generated email template</h1>
-        <p>
         """
-        body_html += text
+        body_html += text_as_html
         body_html += """
-        </p>
         </body>
         </html>
         """
@@ -88,7 +118,7 @@ def email_template_generator_handler(event, context):
         workbook_to_upload_to_s3.save(filename=report_local_path)
 
         email_recipients = EMAIL_RECIPIENTS
-        send_report_as_attachment(report_date=report_date, report_local_path=report_local_path, email_recipients=email_recipients, body_text=text, body_html=body_html)
+        send_report_as_attachment(report_date=report_date, report_local_path=report_local_path, email_recipients=email_recipients, body_text=text_str, body_html=body_html)
 
     except Exception as exc:
         error_message = "Processing email template for report with report_date: " + str(report_date)
