@@ -24,7 +24,9 @@ from constants.sitrep_column_constants import column_title_to_letter_dicts
 # 4 in quarantine on campus (up 1 since previous day)
 # 5 in quarantine off campus (no change since previous day)
 def get_george_mason_text(sheet, row_number):
-    text = 'George Mason\n'
+
+    text = '<b>George Mason</b>\n'
+    text += '<p style="background-color: #75fa4b">'
     text += 'New cases since 1/25/2021.\n'
 
     total_student_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.GMU_TOTAL_STUDENT_CASES_COLUMN] + str(row_number)
@@ -71,11 +73,12 @@ def get_george_mason_text(sheet, row_number):
     contractor_cases_change_since_previous_day_cell_formatted = format_integer(contractor_cases_change_since_previous_day_cell.value)
     contractor_cases_change_since_previous_day_cell_formatted = format_up_down(contractor_cases_change_since_previous_day_cell_formatted)
     text += '{} contractor cases ({} since previous day)\n'.format(contractor_cases_cell_formatted, contractor_cases_change_since_previous_day_cell_formatted)
+    text += '</p>'
 
     text += '\n'
 
     ### Active cases, I'm not updating the variable names, only the columns
-
+    text += '<p style="background-color: #75fa4b">'
     active_total_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.ACTIVE_TOTAL_CASES_COLUMN] + str(row_number)
     active_total_cases_cell = sheet[active_total_cases_cell_str]
     active_total_cases_cell_formatted = format_integer(active_total_cases_cell.value)
@@ -145,10 +148,11 @@ def get_george_mason_text(sheet, row_number):
         contractor_cases_change_since_previous_day_cell_formatted)
     text += '{} active contractor cases ({} since previous day)\n'.format(contractor_cases_cell_formatted,
                                                                    contractor_cases_change_since_previous_day_cell_formatted)
-
+    text += '</p>'
 
     ### Being lazy and not changing the variable names, just the column names
     text += '\n'
+    text += '<p style="background-color: #75fa4b">'
     text += 'Residential students presently in Isolation or Quarantine on and off campus):\n'
     active_total_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.RESIDENTIAL_ISOLATION_ON_CAMPUS] + str(row_number)
     active_total_cases_cell = sheet[active_total_cases_cell_str]
@@ -185,6 +189,8 @@ def get_george_mason_text(sheet, row_number):
     active_total_cases_change_since_previous_day_cell_formatted = format_integer(active_total_cases_change_since_previous_day_cell.value)
     active_total_cases_change_since_previous_day_cell_formatted = format_up_down(active_total_cases_change_since_previous_day_cell_formatted)
     text += '{} in quarantine off campus ({} since previous day)\n'.format(active_total_cases_cell_formatted, active_total_cases_change_since_previous_day_cell_formatted)
+
+    text += '</p>'
     return text
 
 # Global:  118,031,918 cases/2,619,866 deaths
@@ -210,7 +216,7 @@ def get_us_text(sheet, row_number):
     return text
 
 def get_prince_william_county_text(sheet, row_number):
-    text = 'Prince William County\n'
+    text = '<b>Prince William County</b>\n'
     cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.PW_CASES_COLUMN] + str(row_number)
     cases_cell = sheet[cases_cell_str]
     cases_cell_formatted = format_integer(cases_cell.value)
@@ -235,7 +241,7 @@ def get_prince_william_county_text(sheet, row_number):
 # 69,070 cases (up 138 since previous day)
 # 5.5% positive test rate (7 day PCR positive test rate; down 0.1% since previous day)
 def get_arlington_county_text(sheet, row_number):
-    text = 'Arlington County\n'
+    text = '<b>Arlington County</b>\n'
     cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.ARLINGTON_CASES_COLUMN] + str(row_number)
     cases_cell = sheet[cases_cell_str]
     cases_cell_formatted = format_integer(cases_cell.value)
@@ -261,7 +267,7 @@ def get_arlington_county_text(sheet, row_number):
 # 69,070 cases (up 138 since previous day)
 # 5.5% positive test rate (7 day PCR positive test rate; down 0.1% since previous day)
 def get_fairfax_county_text(sheet, row_number):
-    text = 'Fairfax County\n'
+    text = '<b>Fairfax County</b>\n'
     cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.FAIRFAX_CASES_COLUMN] + str(row_number)
     cases_cell = sheet[cases_cell_str]
     cases_cell_formatted = format_integer(cases_cell.value)
@@ -292,7 +298,7 @@ def get_fairfax_county_text(sheet, row_number):
 
 def get_virginia_text(sheet, row_number):
 
-    text = 'Virginia/DC/Maryland\n'
+    text = '<b>Virginia/DC/Maryland</b>\n'
     text += 'Virginia (case and death data from VDH. Hospitalization data from Virginia Health and Hospital Association website/dashboard).\n'
 
     total_cases_cell_str = column_title_to_letter_dicts[sitrep_column_constants.VA_CASES_TOTAL_COLUMN] + str(row_number)
@@ -376,9 +382,30 @@ def get_row_number_of_report_date(sheet, report_date):
         row_number += 1
     raise RuntimeError('Could not find row for reportdate: ' + report_date.__str__())
 
+
+def get_source_data_text():
+    text = 'Virginia and health district data are pulled from the VDH website.  Virginia hospitalization data are from the VHHA website.  Mason data are from OMMT Metrics.  Global and US data are pulled from the Johns Hopkins statistical database.'
+    text += "\n"
+    text += 'Notable changes are highlighted in green.  Please note that not all pages under each CDC link that may be referenced have been updated.  Be sure to check when each particular page you are reading has been updated.'
+    return text
+
+
+def get_intro_text(report_date):
+    text = 'COVID-19 Situation Report'
+    text += "\n"
+    text += 'Date:'
+    text += "\n"
+    text += 'Time:'
+
+    pass
+
+
 def get_email_text_paragraphs_in_list(sheet, report_date):
     row_number = get_row_number_of_report_date(sheet, report_date)
 
+    intro_text = get_intro_text(report_date)
+    source_data_text = get_source_data_text()
+    selected_references_text = 'Selected References:'
     virginia_text = get_virginia_text(sheet, row_number)
     fairfax_county_text = get_fairfax_county_text(sheet, row_number)
     arlington_county_text = get_arlington_county_text(sheet, row_number)
@@ -386,7 +413,7 @@ def get_email_text_paragraphs_in_list(sheet, report_date):
     george_mason_text = get_george_mason_text(sheet, row_number)
     global_text = get_global_text(sheet, row_number)
     us_text = get_us_text(sheet, row_number)
-    return [virginia_text, fairfax_county_text, arlington_county_text, prince_william_county_text, george_mason_text, global_text, us_text]
+    return [intro_text, source_data_text, selected_references_text, virginia_text, fairfax_county_text, arlington_county_text, prince_william_county_text, george_mason_text, global_text, us_text]
 
 # Virginia/DC/Maryland
 # Virginia (case and death data from VDH.  Hospitalization data from Virginia Health and Hospital Association website/dashboard).
