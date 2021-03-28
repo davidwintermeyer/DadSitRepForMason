@@ -137,4 +137,5 @@ def email_template_generator_handler(event, context):
 
     except Exception as exc:
         error_message = "Processing email template for report with report_date: " + str(report_date)
+        print(exc)
         raise RuntimeError(error_message) from exc
