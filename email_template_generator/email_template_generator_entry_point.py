@@ -8,7 +8,7 @@ from openpyxl import load_workbook
 
 from constants.email_constants import EMAIL_RECIPIENTS
 from constants.file_constants import get_s3_key, PRIVATE_S3_BUCKET_NAME, get_file_name
-from email_template_generator.email_template_processor import get_email_text_paragraphs_in_list, get_email_html
+from email_template_generator.email_template_processor import get_email_html
 from util.date_util import get_days_ago
 from util.lambda_util import get_report_date_time
 from util.s3_util import download_file, upload_workbook
