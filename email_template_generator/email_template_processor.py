@@ -397,15 +397,22 @@ def get_intro_text(report_date):
     text += "\n"
     text += 'Time:'
 
-    pass
+    return text
+
+# appends all the paragraphs together
+def append_sections(text_paragraphs_in_list):
+    text = ''
+    for paragraph in text_paragraphs_in_list:
+        text += paragraph
+    return text
 
 
-def get_email_text_paragraphs_in_list(sheet, report_date):
+def get_email_html(sheet, report_date):
     row_number = get_row_number_of_report_date(sheet, report_date)
 
     intro_text = get_intro_text(report_date)
     source_data_text = get_source_data_text()
-    selected_references_text = 'Selected References:'
+    selected_references_text = '<p>Selected References:</p>'
     virginia_text = get_virginia_text(sheet, row_number)
     fairfax_county_text = get_fairfax_county_text(sheet, row_number)
     arlington_county_text = get_arlington_county_text(sheet, row_number)
@@ -413,7 +420,8 @@ def get_email_text_paragraphs_in_list(sheet, report_date):
     george_mason_text = get_george_mason_text(sheet, row_number)
     global_text = get_global_text(sheet, row_number)
     us_text = get_us_text(sheet, row_number)
-    return [intro_text, source_data_text, selected_references_text, virginia_text, fairfax_county_text, arlington_county_text, prince_william_county_text, george_mason_text, global_text, us_text]
+
+    return append_sections([intro_text, source_data_text, selected_references_text, virginia_text, fairfax_county_text, arlington_county_text, prince_william_county_text, george_mason_text, global_text, us_text])
 
 # Virginia/DC/Maryland
 # Virginia (case and death data from VDH.  Hospitalization data from Virginia Health and Hospital Association website/dashboard).

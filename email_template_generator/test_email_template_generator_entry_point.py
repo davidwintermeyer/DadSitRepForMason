@@ -4,7 +4,7 @@ from datetime import date, datetime
 from pytz import timezone
 import json
 
-from email_template_generator_entry_point import email_template_generator_handler
+from email_template_generator.email_template_generator_entry_point import email_template_generator_handler
 
 os.environ["DEBUSSY"] = "1"
 os.environ["DEBUSSY"] = "1"
@@ -18,7 +18,7 @@ def generate_test_event_json(report_date: date):
                 "eventVersion": "2.1",
                 "eventSource": "aws:s3",
                 "awsRegion": "us-east-1",
-                "eventTime": "2021-03-18T01:18:04.645Z",
+                "eventTime": "2021-03-29T22:18:04.645Z",
                 "eventName": "ObjectCreated:Copy",
                 "userIdentity": {
                     "principalId": "A3GDKR019UAWM"
@@ -41,7 +41,7 @@ def generate_test_event_json(report_date: date):
                         "arn": "arn:aws:s3:::dadsitrepformason-public.com"
                     },
                     "object": {
-                        "key": "uploadedSitReps/Complete-Covid-19_SitRep_Data-V3-03-17-2021.xlsx",
+                        "key": "uploadedSitReps/Complete_Covid-19_SitRep_Data-V3-03-29-2021.xlsx",
                         "size": 104399,
                         "eTag": "c0b951a89055a8e8e395b2c273829995",
                         "versionId": "AhXsR1VSomOvbbjjTO7GmVDKHRN39D3I",
