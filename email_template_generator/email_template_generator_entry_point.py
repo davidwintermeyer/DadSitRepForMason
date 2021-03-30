@@ -2,6 +2,8 @@ import datetime
 import json
 
 ## email_template_generator_handler invoked with event:
+import traceback
+
 from openpyxl import load_workbook
 
 from constants.email_constants import EMAIL_RECIPIENTS
@@ -136,6 +138,7 @@ def email_template_generator_handler(event, context):
         send_report_as_attachment(report_local_path=report_local_path, email_recipients=email_recipients, subject=get_subject(report_date), body_text=text_str, body_html=body_html)
 
     except Exception as exc:
+        traceback.print_exc()
         print(exc)
         error_message = "Processing email template for report with report_date: " + str(report_date)
         raise RuntimeError(error_message, exc) from exc
